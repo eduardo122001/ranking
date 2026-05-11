@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\NotasImport;
 
-class NotaController extends Controller
+class NotaController extends Controller //modificar esto o eliminarlo, esto funcionaba con mi bd de prueba chiquita
 {
     public function form()
     {

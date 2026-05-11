@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class NotasImport implements ToModel, WithHeadingRow
 {
-    public function model(array $row)
+    public function model(array $row) //modificar esto o eliminarlo, esto funcionaba con mi bd de prueba chiquita
     {
         return new Nota([
             'dni' => $row['dni'],

@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notas', function (Blueprint $table) {
+        Schema::create('carreras', function (Blueprint $table) {
             $table->id();
-            $table->string('dni');
-            $table->string('nombre');
-            $table->integer('aspecto1');
-            $table->integer('aspecto2');
-            $table->integer('aspecto3');
-            $table->integer('aspecto4');
+            $table->string('nombre', 50);
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notas');
+        Schema::dropIfExists('carreras');
     }
 };
