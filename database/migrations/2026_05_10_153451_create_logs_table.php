@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('logs', function (Blueprint $table) {
-            $table->id();
+            Schema::create('logs', function (Blueprint $table) {
+                $table->id();
 
-            $table->foreignId('autor_id')->constrained('users');
+                $table->foreignId('autor_id')->constrained('users');
 
-            $table->string('accion', 200);
+                $table->string('accion', 200);
 
-            $table->timestamp('fecha')->useCurrent();
-
-            $table->timestamps();
-        });
+                $table->timestamps();
+            });
     }
 
     /**

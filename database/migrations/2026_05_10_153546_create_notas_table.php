@@ -19,8 +19,6 @@ return new class extends Migration
 
             $table->foreignId('semestre_id')->constrained('semestres');
 
-            $table->foreignId('carrera_id')->constrained('carreras');
-
             $table->decimal('rendimiento', 5, 2);
 
             $table->decimal('comportamiento', 5, 2);
@@ -30,8 +28,6 @@ return new class extends Migration
             $table->decimal('referente', 5, 2);
 
             $table->decimal('promedio', 5, 2);
-
-            $table->decimal('ranking', 5, 2);
 
             $table->timestamps();
         });

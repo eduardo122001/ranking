@@ -4,11 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Nota extends Model
+class Peso extends Model
 {
     protected $fillable = [
-
-        'estudiante_id',
 
         'semestre_id',
 
@@ -18,10 +16,6 @@ class Nota extends Model
 
         'pagos',
 
-        'referente',
-
-        'promedio',
-
-        'ranking'
+        'referente'
     ];
 }

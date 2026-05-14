@@ -23,7 +23,7 @@ return new class extends Migration
 
             $table->decimal('pagos', 5, 2);
 
-            $table->decimal('referentes', 5, 2);
+            $table->decimal('referente', 5, 2);
 
             $table->timestamp('fecha')->useCurrent();
 

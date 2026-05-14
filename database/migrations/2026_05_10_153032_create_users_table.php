@@ -18,10 +18,10 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('google_id')->nullable();
+            $table->string('dni', 8)->unique();
+            $table->foreignId('rol_id')->constrained('roles');
             $table->rememberToken();
             $table->timestamps();
-            $table->string('dni', 8);
-            $table->foreignId('rol_id')->constrained('roles');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
