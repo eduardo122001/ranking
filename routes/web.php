@@ -22,3 +22,6 @@ Route::get('/google-auth/callback', function () {
 Route::get('/upload', [NotaController::class, 'form']);
 
 Route::post('/upload', [NotaController::class, 'upload']);
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
