@@ -1,12 +1,19 @@
-Recuerden cambiar el env con su base de datos :), o sino miren este video :)
-https://www.youtube.com/watch?v=FyoKtwkgx-8&list=PLpKWS6gp0jd8wsN5wSDwEFcvkD6nQ66yM&index=3
+## Flujo
+composer install
+npm install
+copy .env.example .env
+php artisan key:generate
+php artisan migrate
+npm run dev
+php artisan serve (si es que no estas usando los sites de Herd)
 
-# branch pruebDB
-## inicializar db
-- actualizar .env a su base de datos 
-- algunas tablas necesito aclarar que funcion cumplen
-- cargar la db en mysql nuevamente caso error con su db actual : actualizardb.sql
-- realizar el comando siguiente caso no se inicializaron tablas faltantes: php artisan migrate:fresh
+http://frontend-fab.test/dashboard (Dashboard de estudiante)
+http://frontend-fab.test/upload (Subida de excel)
 
-## preguntas(caso preguntas o consultas de la db en esta parte)
-- 
+
+Si hay error en run dev:
+La APP_URL de .env debe ser
+APP_URL=http://frontend-fab.test
+
+o bien si NO usas herd sites:
+APP_URL=http://127.0.0.1:8000
