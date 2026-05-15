@@ -6,7 +6,7 @@ namespace App\Imports;
 use App\Models\User;
 use App\Models\Nota;
 use App\Models\Semestre;
-use App\Models\Carrera;
+use App\Models\Carrera; 
 use App\Models\Peso;
 
 
@@ -14,7 +14,8 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class NotasImport implements ToModel, WithHeadingRow
-{
+{   
+    public array $gruposAfectados=[];
     public function model(array $row)
     {
         // Buscar o crear usuario por DNI
@@ -28,27 +29,25 @@ class NotasImport implements ToModel, WithHeadingRow
                 'rol_id' => 2
             ]
         );
-        
+
         // Obtener el valor del semestre
         $nombreSemestre = $row['semestre'];
 
         // Obtener la primera letra
         $letra = strtoupper(substr($nombreSemestre, 0, 1));
+        $numero_semestre = (int) substr($nombreSemestre, 2, 1);
 
         // Determinar carrera
         if ($letra == 'G') {
 
             $nombreCarrera = 'Gastronomia';
-
         } else {
             if ($letra == 'A') {
 
                 $nombreCarrera = 'Administracion';
-
+            } else {
+                $nombreCarrera = 'General';
             }
-            else {
-            $nombreCarrera = 'General';
-            } 
         }
 
         $carrera = Carrera::firstOrCreate(
@@ -62,14 +61,22 @@ class NotasImport implements ToModel, WithHeadingRow
 
             [
                 'nombre' => $nombreSemestre,
-                'ciclo' => '2026-1'
-            ],
-
-            [
-                'carrera_id' => $carrera->id
             ]
         );
-        
+
+        // Guardar grupo afectado
+        $key = $semestre->id . '-' . $carrera->id;
+
+        $this->gruposAfectados[$key] = [
+
+            'semestre_id' => $semestre->id,
+
+            'carrera_id' => $carrera->id,
+            
+            'semestre_estudiante'=> $numero_semestre
+        ];
+
+
         if ($semestre->wasRecentlyCreated) {
 
             Peso::create([
@@ -87,24 +94,24 @@ class NotasImport implements ToModel, WithHeadingRow
         }
 
         // Obtener pesos del semestre
-        $peso = Peso::where('semestre_id',$semestre->id)->first();
+        $peso = Peso::where('semestre_id', $semestre->id)->first();
 
         // Calcular promedio
         $promedio =
 
-        ($row['rendimiento'] * $peso->rendimiento)
+            ($row['rendimiento'] * $peso->rendimiento)
 
-        +
+            +
 
-        ($row['comportamiento'] * $peso->comportamiento)
+            ($row['comportamiento'] * $peso->comportamiento)
 
-        +
+            +
 
-        ($row['pagos'] * $peso->pagos)
+            ($row['pagos'] * $peso->pagos)
 
-        +
+            +
 
-        ($row['referente'] * $peso->referente);
+            ($row['referente'] * $peso->referente);
 
         // Crear nota
         return new Nota([
@@ -112,6 +119,10 @@ class NotasImport implements ToModel, WithHeadingRow
             'estudiante_id' => $usuario->id,
 
             'semestre_id' => $semestre->id,
+
+            'carrera_id' => $carrera->id,
+            
+            'semestre_estudiante' => $numero_semestre,
 
             'rendimiento' => $row['rendimiento'],
 
@@ -123,6 +134,7 @@ class NotasImport implements ToModel, WithHeadingRow
 
             'promedio' => $promedio,
 
+            'ranking' => 0,
         ]);
     }
 }

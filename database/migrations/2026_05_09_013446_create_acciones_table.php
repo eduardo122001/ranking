@@ -11,19 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pesos', function (Blueprint $table) {
+        Schema::create('acciones', function (Blueprint $table) {
 
             $table->id();
 
-            $table->foreignId('semestre_id')->constrained('semestres');
-
-            $table->decimal('rendimiento', 5, 2);
-
-            $table->decimal('comportamiento', 5, 2);
-
-            $table->decimal('pagos', 5, 2);
-
-            $table->decimal('referente', 5, 2);
+            $table->string('nombre', 20)->unique();
 
             $table->timestamps();
         });
@@ -34,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pesos');
+        Schema::dropIfExists('acciones');
     }
 };

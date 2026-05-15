@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-            Schema::create('logs', function (Blueprint $table) {
-                $table->id();
+        Schema::create('logs', function (Blueprint $table) {
 
-                $table->foreignId('autor_id')->constrained('users');
+            $table->id();
 
-                $table->string('accion', 200);
+            $table->foreignId('autor_id')->nullable()->constrained('users');
 
-                $table->timestamps();
-            });
+            $table->foreignId('accion_id')->constrained('acciones');
+
+            $table->string('descripcion', 100);
+
+            $table->timestamps();
+        });
     }
 
     /**

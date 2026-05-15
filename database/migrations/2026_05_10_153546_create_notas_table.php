@@ -19,15 +19,27 @@ return new class extends Migration
 
             $table->foreignId('semestre_id')->constrained('semestres');
 
-            $table->decimal('rendimiento', 5, 2);
+            $table->foreignId('carrera_id')->constrained('carreras');
 
-            $table->decimal('comportamiento', 5, 2);
+            $table->integer('semestre_estudiante');
 
-            $table->decimal('pagos', 5, 2);
+            $table->decimal('rendimiento', 5, 2)->default(0.00);
 
-            $table->decimal('referente', 5, 2);
+            $table->decimal('comportamiento', 5, 2)->default(0.00);
 
-            $table->decimal('promedio', 5, 2);
+            $table->decimal('pagos', 5, 2)->default(0.00);
+
+            $table->decimal('referente', 5, 2)->default(0.00);
+
+            $table->decimal('promedio', 5, 2)->default(0.00);
+
+            $table->integer('ranking')->default(0);
+
+            $table->unique([
+                'estudiante_id',
+                'semestre_id',
+                'carrera_id'
+            ]);
 
             $table->timestamps();
         });

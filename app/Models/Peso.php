@@ -7,15 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class Peso extends Model
 {
     protected $fillable = [
+    'semestre_id',
 
-        'semestre_id',
+    'rendimiento',
 
-        'rendimiento',
+    'comportamiento',
 
-        'comportamiento',
+    'pagos',
 
-        'pagos',
+    'referente'
+];
 
-        'referente'
-    ];
+public function semestre()
+    {
+        return $this->belongsTo(Semestre::class);
+    }
 }

@@ -14,10 +14,7 @@ return new class extends Migration
         Schema::create('semestres', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 10);
-            $table->string('ciclo', 10);
-            $table->foreignId('carrera_id')->constrained('carreras');
             $table->timestamps();
-            $table->unique(['nombre', 'ciclo']);
         });
     }
 
