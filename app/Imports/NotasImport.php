@@ -6,7 +6,7 @@ namespace App\Imports;
 use App\Models\User;
 use App\Models\Nota;
 use App\Models\Semestre;
-use App\Models\Carrera; 
+use App\Models\Carrera;
 use App\Models\Peso;
 
 
@@ -14,8 +14,15 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class NotasImport implements ToModel, WithHeadingRow
-{   
-    public array $gruposAfectados=[];
+{
+    private int $semestreId;
+    public array $gruposAfectados = [];
+
+    public function __construct(int $semestreId)
+    {
+        $this->semestreId = $semestreId;
+    }
+
     public function model(array $row)
     {
         // Buscar o crear usuario por DNI
@@ -57,45 +64,25 @@ class NotasImport implements ToModel, WithHeadingRow
         );
 
         // Buscar semestre
-        $semestre = Semestre::firstOrCreate(
-
-            [
-                'nombre' => $nombreSemestre,
-            ]
-        );
+        $semestreId = $this->semestreId;
 
         // Guardar grupo afectado
-        $key = $semestre->id . '-' . $carrera->id;
+        $key = $semestreId . '-' . $carrera->id;
 
         $this->gruposAfectados[$key] = [
 
-            'semestre_id' => $semestre->id,
+            'semestre_id' => $semestreId,
 
             'carrera_id' => $carrera->id,
             
-            'semestre_estudiante'=> $numero_semestre
+            'semestre_estudiante' => $numero_semestre
         ];
 
 
-        if ($semestre->wasRecentlyCreated) {
 
-            Peso::create([
-
-                'semestre_id' => $semestre->id,
-
-                'rendimiento' => 0.35,
-
-                'comportamiento' => 0.35,
-
-                'pagos' => 0.15,
-
-                'referente' => 0.15
-            ]);
-        }
 
         // Obtener pesos del semestre
-        $peso = Peso::where('semestre_id', $semestre->id)->first();
-
+        $peso = Peso::latest('id')->first();
         // Calcular promedio
         $promedio =
 
@@ -118,10 +105,10 @@ class NotasImport implements ToModel, WithHeadingRow
 
             'estudiante_id' => $usuario->id,
 
-            'semestre_id' => $semestre->id,
+            'semestre_id' => $this->semestreId,
 
             'carrera_id' => $carrera->id,
-            
+
             'semestre_estudiante' => $numero_semestre,
 
             'rendimiento' => $row['rendimiento'],

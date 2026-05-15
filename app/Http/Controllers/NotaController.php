@@ -9,23 +9,31 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Imports\NotasImport;
+use App\Models\Semestre;
 
 class NotaController extends Controller
 {
     public function form()
     {
-        return view('upload');
+        $semestres = Semestre::orderBy('id', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('upload', compact('semestres'));
     }
 
     public function upload(Request $request)
     {
         // Validar archivo
         $request->validate([
-            'file' => 'required|mimes:xlsx,xls'
+            'file' => 'required|mimes:xlsx,xls',
+            'semestre_id' => 'required|exists:semestres,id'
         ]);
 
+        $semestreId = $request->semestre_id;
+
         // Crear import
-        $import = new NotasImport();
+        $import = new NotasImport($semestreId);
 
         // Importar Excel
         Excel::import(
@@ -36,7 +44,7 @@ class NotaController extends Controller
         // Recalcular rankings SOLO de grupos afectados
         foreach ($import->gruposAfectados as $grupo) {
 
-    DB::statement("
+            DB::statement("
         UPDATE notas n
         JOIN (
             SELECT
@@ -58,15 +66,15 @@ class NotaController extends Controller
         AND n.semestre_estudiante = ?
     ", [
 
-        $grupo['semestre_id'],
-        $grupo['carrera_id'],
-        $grupo['semestre_estudiante'],
+                $grupo['semestre_id'],
+                $grupo['carrera_id'],
+                $grupo['semestre_estudiante'],
 
-        $grupo['semestre_id'],
-        $grupo['carrera_id'],
-        $grupo['semestre_estudiante']
-    ]);
-}
+                $grupo['semestre_id'],
+                $grupo['carrera_id'],
+                $grupo['semestre_estudiante']
+            ]);
+        }
 
         return back()->with(
             'success',
