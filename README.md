@@ -29,7 +29,7 @@ Paso 9: Habilitar HTTPS con Herd Google requiere HTTPS incluso en entornos local
 1) herd link localhost
 2) herd trust
 3) herd secure localhost 
-Luego accede a tu app desde: https://localhost/login
+4) Luego accede a tu app desde: https://localhost/login
 
 Paso 10: Compilar assets Asegurate de tener Tailwind compilado mientras desarrollas: npm install npm run dev
 
