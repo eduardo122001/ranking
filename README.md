@@ -25,10 +25,10 @@ Paso 7: Definir las rutas en routes/web.php Route::get('/login', fn() => view('a
 
 Paso 8: Crear la vista de login Guarda el archivo Blade en: resources/views/auth/login.blade.php La vista incluye el boton 'Continuar con Google' y muestra mensajes de error de sesion.
 
-Paso 9: Habilitar HTTPS con Herd Google requiere HTTPS incluso en entornos locales. Ejecuta en el cmd: 0) herd link localhost
-
-herd trust
-herd secure localhost 
+Paso 9: Habilitar HTTPS con Herd Google requiere HTTPS incluso en entornos locales. Ejecuta en el cmd: 
+0) herd link localhost
+1) herd trust
+2) herd secure localhost 
 Luego accede a tu app desde: https://localhost/login
 
 Paso 10: Compilar assets Asegurate de tener Tailwind compilado mientras desarrollas: npm install npm run dev
