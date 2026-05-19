@@ -28,7 +28,9 @@ Paso 8: Crear la vista de login Guarda el archivo Blade en: resources/views/auth
 Paso 9: Habilitar HTTPS con Herd Google requiere HTTPS incluso en entornos locales. Ejecuta en el cmd: 0) herd link localhost
 
 herd trust
-herd secure localhost Luego accede a tu app desde: https://localhost/login
+herd secure localhost 
+Luego accede a tu app desde: https://localhost/login
+
 Paso 10: Compilar assets Asegurate de tener Tailwind compilado mientras desarrollas: npm install npm run dev
 
 Notas importantes Google no acepta dominios .test como redirect URI, usar https://localhost php artisan serve no funciona con Herd activo (conflicto de puertos) Despues de editar el .env siempre correr: php artisan config:clear Si un campo obligatorio en users falla, hacerlo nullable en la migracion En produccion cambiar la redirect URI a https://tudominio.com/auth/google/callback
