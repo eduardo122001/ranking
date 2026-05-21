@@ -8,6 +8,16 @@
 </head>
 <body class="bg-[#f6f7fb] text-slate-900 antialiased">
 
+    <form method="POST" action="{{ route('logout') }}">
+
+    @csrf
+
+    <button type="submit">
+        Cerrar sesión
+    </button>
+
+    </form>
+
     <div class="min-h-screen flex">
 
         <aside class="hidden lg:flex w-72 flex-col border-r border-slate-200 bg-white/80 backdrop-blur">

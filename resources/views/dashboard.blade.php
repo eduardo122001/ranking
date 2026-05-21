@@ -5,6 +5,16 @@
         </h2>
     </x-slot>
 
+    <form method="POST" action="{{ route('logout') }}">
+
+        @csrf
+
+        <button type="submit">
+            Cerrar sesión
+        </button>
+
+    </form>
+
     @php
         $nombre = auth()->user()->name ?? 'Estudiante';
         $ranking = $registro->ranking ?? null;
@@ -40,10 +50,10 @@
 
         // VARIABLES FALTANTES PARA LAS BARRAS DE PROGRESO
         // (Asumo que la nota máxima es 20. Si la nota máxima es otra, cambia el "20" por ese número)
-        $rendimientoBar = ($rendimiento / 20) * 100;
-        $comportamientoBar = ($comportamiento / 20) * 100;
-        $pagosBar = ($pagos / 20) * 100;
-        $referenteBar = ($referente / 20) * 100;
+        $rendimientoBar = ($rendimiento / 2000) * 100;
+        $comportamientoBar = ($comportamiento / 2000) * 100;
+        $pagosBar = ($pagos / 2000) * 100;
+        $referenteBar = ($referente / 2000) * 100;
     @endphp
 
     <div class="min-h-screen bg-[#f6f7fb]">
@@ -218,7 +228,7 @@
                                 <div class="text-6xl font-black tracking-tight text-[#1f2a7a]">
                                     {{ number_format($promedio, 2) }}
                                 </div>
-                                <div class="mt-1 text-lg font-semibold text-gray-400">/ 20.0</div>
+                                <div class="mt-1 text-lg font-semibold text-gray-400">/ 2000.0</div>
                             </div>
 
                             <div class="mt-6 rounded-2xl bg-emerald-50 p-4">

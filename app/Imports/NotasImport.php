@@ -30,7 +30,7 @@ class NotasImport implements ToModel, WithHeadingRow, WithUpserts // 2. Agregamo
             [
                 'name' => $row['nombre'],
                 'email' => $row['correo'],
-                'rol_id' => 2
+                'rol_id' => 4
             ]
         );
 
@@ -83,11 +83,11 @@ class NotasImport implements ToModel, WithHeadingRow, WithUpserts // 2. Agregamo
             'semestre_id' => $this->semestreId,
             'carrera_id' => $carrera->id,
             'semestre_estudiante' => $numero_semestre,
-            'rendimiento' => $row['rendimiento'],
-            'comportamiento' => $row['comportamiento'],
-            'pagos' => $row['pagos'],
-            'referente' => $row['referente'],
-            'promedio' => $promedio,
+            'rendimiento' => $row['rendimiento']*100,
+            'comportamiento' => $row['comportamiento']*100,
+            'pagos' => $row['pagos']*100,
+            'referente' => $row['referente']*100,
+            'promedio' => $promedio*100,
             'ranking' => 0,
         ]);
     }

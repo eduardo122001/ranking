@@ -23,15 +23,15 @@ return new class extends Migration
 
             $table->integer('semestre_estudiante');
 
-            $table->decimal('rendimiento', 5, 2)->default(0.00);
+            $table->decimal('rendimiento', 8, 2);
 
-            $table->decimal('comportamiento', 5, 2)->default(0.00);
+            $table->decimal('comportamiento', 8, 2);
 
-            $table->decimal('pagos', 5, 2)->default(0.00);
+            $table->decimal('pagos', 8, 2);
 
-            $table->decimal('referente', 5, 2)->default(0.00);
+            $table->decimal('referente', 8, 2);
 
-            $table->decimal('promedio', 5, 2)->default(0.00);
+            $table->decimal('promedio', 8, 2);
 
             $table->integer('ranking')->default(0);
 

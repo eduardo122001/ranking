@@ -30,7 +30,25 @@ class GoogleController extends Controller
 
         Auth::login($user);
 
-        return redirect()->intended('/dashboard');
+        // Estudiante
+        if ($user->rol_id == 4) {
+
+            return redirect('/dashboard');
+        }
+
+        // Tutor
+        if ($user->rol_id == 3) {
+
+            return redirect('/upload');
+        }
+
+        // Otros roles
+        Auth::logout();
+
+        return redirect('/login')->with(
+            'error',
+            'Rol no autorizado.'
+        );
 
     } catch (\Exception $e) {
         return redirect('/login')->with('error', 'Error al autenticar con Google.');
