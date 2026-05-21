@@ -1,36 +1,69 @@
-# inicializacion db(caso error borrar y crear la db nuevamente)
-1)hacer en el cmd -> php artisan migrate:fresh
-2)hacer en el cmd -> php artisan db:seed
-3)correr el programa http:/tucoso/upload
-4)colocar el excel
-5)yata
+# Inicialización del Proyecto
 
-#CAMBIOS DEL 19/05/2026 LOGIN PASOS
+### 1. Clonar el repositorio e instalar dependencias
+```bash
+# Instalar dependencias de PHP
+composer install
 
-TODO LO QUE SEA MODIFICAR EL CODIGO YA ESTA, solo tienen que crear el google cloud y cambiar el env, tambien ejecutar los comandos de herd link y eso
+# Instalar dependencias de JavaScript (Tailwind, Vite, etc.)
+npm install
+```
 
-Paso 1: Instalar Laravel Socialite Ejecuta el siguiente comando en la terminal dentro de tu proyecto: composer require laravel/socialite
+### 2. Configurar el archivo de entorno
+Duplica el archivo de ejemplo .env.example y renómbralo a .env:
+```bash
+cp .env.example .env
+```
 
-Paso 2: Crear credenciales en Google Cloud Console Ingresa a https://console.cloud.google.com y sigue estos pasos: Ve a APIs & Services > Credentials Clic en Create Credentials > OAuth 2.0 Client ID Tipo de aplicacion: Web application En Authorized redirect URIs agrega: https://localhost/auth/google/callback Copia el Client ID y Client Secret generados
+### 3. Generar la clave de la aplicación
+```bash
+php artisan key:generate
+```
 
-Paso 3: Configurar el archivo .env Agrega las credenciales de Google en tu archivo .env: GOOGLE_CLIENT_ID=tu-client-id ////////////////////otra linea////////////////////////// GOOGLE_CLIENT_SECRET=tu-client-secret ////////////////otra linea////////////////////////////// GOOGLE_REDIRECT_URI=https://localhost/auth/google/callback
+### 4. Ejecutar Migraciones y Seeders
+Crea las tablas en tu base de datos junto con los datos base (roles, semestres iniciales, pesos, etc.):
+```Bash
+php artisan migrate --seed
+```
 
-Paso 4: Registrar el servicio en config/services.php 'google' => [ 'client_id' => env('GOOGLE_CLIENT_ID'), 'client_secret' => env('GOOGLE_CLIENT_SECRET'), 'redirect' => env('GOOGLE_REDIRECT_URI'), ],
+### 5. Compilar assets frontend y arrancar el servidor
+```Bash
+# Compilar estilos y scripts en tiempo real
+npm run dev
 
-Paso 5: Agregar columnas a la tabla users// OMITIR ESTA PARTE, INNECESARIA
+# En otra terminal, levanta el servidor de Laravel (si no usas el dominio automático de Herd)
+php artisan serve
+```
 
-Paso 6: Crear el GoogleController php artisan make:controller Auth/GoogleController El controlador solo busca el usuario por email (sin crear nuevos registros): $googleUser = Socialite::driver('google')->user(); $user = User::where('email', $googleUser->getEmail())->first(); if (!$user) { return redirect('/login')->with('error', 'Usuario no aceptado.'); } Auth::login($user); return redirect()->intended('/dashboard');
+# Configuración de Google Login (OAuth 2.0)
+Para que el inicio de sesión con Google funcione en tu PC local, cada desarrollador debe configurar sus propias credenciales en la consola de Google:
 
-Paso 7: Definir las rutas en routes/web.php Route::get('/login', fn() => view('auth.login'))->name('login'); Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('google.redirect'); Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
+### Paso 1: Crear Credenciales en Google Cloud
+Ve a la Google Cloud Console.
 
-Paso 8: Crear la vista de login Guarda el archivo Blade en: resources/views/auth/login.blade.php La vista incluye el boton 'Continuar con Google' y muestra mensajes de error de sesion.
+Crea un proyecto nuevo o selecciona uno existente.
 
-Paso 9: Habilitar HTTPS con Herd Google requiere HTTPS incluso en entornos locales. Ejecuta en el cmd: 
-1) herd link localhost
-2) herd trust
-3) herd secure localhost 
-4) Luego accede a tu app desde: https://localhost/login
+En el menú de la izquierda, ve a API y servicios > Pantalla de consentimiento de OAuth, configúrala como Externo y llena los datos básicos.
 
-Paso 10: Compilar assets Asegurate de tener Tailwind compilado mientras desarrollas: npm install npm run dev
+Ve a Credenciales, haz clic en + Crear credenciales y selecciona ID de cliente de OAuth.
 
-Notas importantes Google no acepta dominios .test como redirect URI, usar https://localhost php artisan serve no funciona con Herd activo (conflicto de puertos) Despues de editar el .env siempre correr: php artisan config:clear Si un campo obligatorio en users falla, hacerlo nullable en la migracion En produccion cambiar la redirect URI a https://tudominio.com/auth/google/callback
+Selecciona Aplicación web como tipo de aplicación.
+
+### Paso 2: Configurar las URIs Locales
+Dentro de la configuración del ID de cliente de OAuth que acabas de crear, añade lo siguiente según tu entorno:
+
+Orígenes de JavaScript autorizados:
+
+http://localhost:8000 (O tu URL local de Laravel Herd, por ejemplo: http://ranking-login.test)
+
+URIs de redireccionamiento autorizados:
+
+http://localhost:8000/auth/google/callback (O tu URL de Herd: http://ranking-login.test/auth/google/callback)
+
+### Paso 3: Actualizar el archivo .env
+Copia el Client ID y el Client Secret que te dio Google y pégalos al final de tu archivo .env:
+```Bash
+GOOGLE_CLIENT_ID="TU_CLIENT_ID_DE_GOOGLE.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="TU_CLIENT_SECRET_DE_GOOGLE"
+GOOGLE_REDIRECT_URI="http://localhost:8000/auth/google/callback"
+```
