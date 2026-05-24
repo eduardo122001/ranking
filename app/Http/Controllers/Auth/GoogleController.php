@@ -42,6 +42,10 @@ class GoogleController extends Controller
             return redirect('/upload');
         }
 
+        if ($user->rol_id == 1) {
+
+            return redirect('/pesos');
+        }
         // Otros roles
         Auth::logout();
 

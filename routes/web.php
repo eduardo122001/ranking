@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotaController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PesoController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,5 +47,11 @@ Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name
     return redirect('/login');
 
 })->name('logout');*/
+
+Route::get('/pesos', [PesoController::class, 'index'])
+    ->name('pesos.index');
+
+Route::post('/pesos/update', [PesoController::class, 'update'])
+    ->name('pesos.update');
 
 require __DIR__.'/auth.php';

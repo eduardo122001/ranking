@@ -23,5 +23,31 @@ class UserSeeder extends Seeder
             'password' => null
 
         ]);
+        User::create([
+
+            'name' => 'eduardo',
+
+            'email' => 'eddcrr1@gmail.com',
+
+            'dni' => '48605739',
+
+            'rol_id' => 3,
+
+            'password' => null
+
+        ]);
+        User::create([
+
+            'name' => 'juan',
+
+            'email' => 'eduarcrlr@gmail.com',
+
+            'dni' => '48633739',
+
+            'rol_id' => 1,
+
+            'password' => null
+
+        ]);
     }
 }
