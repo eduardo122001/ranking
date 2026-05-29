@@ -5,6 +5,7 @@ use App\Http\Controllers\NotaController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PesoController;
+use App\Http\Controllers\RankingController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -53,5 +54,10 @@ Route::get('/pesos', [PesoController::class, 'index'])
 
 Route::post('/pesos/update', [PesoController::class, 'update'])
     ->name('pesos.update');
+
+
+
+Route::get('/rankinglist', [RankingController::class, 'index'])
+    ->name('ranking.index');
 
 require __DIR__.'/auth.php';

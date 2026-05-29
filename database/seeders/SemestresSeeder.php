@@ -16,6 +16,18 @@ class SemestresSeeder extends Seeder
         Semestre::Create(
 
             [
+                'nombre' => '2025-1',
+            ]
+        );
+        Semestre::Create(
+
+            [
+                'nombre' => '2025-2',
+            ]
+        );
+        Semestre::Create(
+
+            [
                 'nombre' => '2026-1',
             ]
         );
