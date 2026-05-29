@@ -41,10 +41,11 @@ class GoogleController extends Controller
 
             return redirect('/upload');
         }
-
+        // superadministrador
         if ($user->rol_id == 1) {
 
-            return redirect('/pesos');
+            //return redirect('/pesos');
+            return redirect('/rankinglist');
         }
         // Otros roles
         Auth::logout();
