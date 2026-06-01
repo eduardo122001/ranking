@@ -18,11 +18,26 @@ class UserSeeder extends Seeder
 
             'dni' => '71332251',
 
+            'rol_id' => 1,
+
+            'password' => null
+
+        ]);
+
+        User::create([
+
+            'name' => 'matias',
+
+            'email' => 'matias.sanchez@ucsp.edu.pe',
+
+            'dni' => '71300251',
+
             'rol_id' => 3,
 
             'password' => null
 
         ]);
+
         User::create([
 
             'name' => 'eduardo',
