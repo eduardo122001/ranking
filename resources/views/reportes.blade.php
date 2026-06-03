@@ -116,12 +116,12 @@
 <span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="functions">functions</span>
                 Fórmulas
             </a>
-<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('reportes.index') }}">
-<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="analytics">analytics</span>
+<a class="flex items-center border-l-4 border-[#001360] bg-slate-200/50 dark:bg-slate-800/50 text-[#001360] dark:text-blue-300 font-bold px-6 py-4 transition-all duration-200" href="{{ route('reportes.index') }}">
+<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="group">analytics</span>
                 Reportes
             </a>
-<a class="flex items-center border-l-4 border-[#001360] bg-slate-200/50 dark:bg-slate-800/50 text-[#001360] dark:text-blue-300 font-bold px-6 py-4 transition-all duration-200" href="{{ route('usuarios.index') }}">
-<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="group">group</span>
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('usuarios.index') }}">
+<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="functions">group</span>
                 Usuarios
             </a>
 </nav>
@@ -140,7 +140,7 @@
 <!-- Top App Bar -->
 <header class="w-full sticky top-0 z-40 bg-[#fbf8ff] dark:bg-slate-950 shadow-sm dark:shadow-none flex justify-between items-center px-12 py-6">
 <div class="flex flex-col">
-<h2 class="font-[Manrope] font-extrabold text-[#001360] dark:text-blue-100 text-2xl tracking-tight">Usuarios</h2>
+<h2 class="font-[Manrope] font-extrabold text-[#001360] dark:text-blue-100 text-2xl tracking-tight">Reportes</h2>
 <p class="text-sm font-label text-outline">Consolidado Académico 2024-II</p>
 </div>
 <div class="flex items-center gap-6">
@@ -163,38 +163,25 @@
 
 <div class="px-12 py-8 bg-surface-container-low min-h-[calc(100vh-100px)]">
 
-    <div class="flex justify-end mb-6">
-
-        <a
-            href="{{ route('usuarios.create') }}"
-            class="px-5 py-2 bg-primary text-white rounded-xl font-semibold">
-
-            + Nuevo Usuario
-
-        </a>
-
-    </div>
-
-
     <!-- Filtros -->
     <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
 
         <form
             method="GET"
-            action="{{ route('usuarios.index') }}"
+            action="{{ route('reportes.index') }}"
             class="flex gap-4 flex-wrap">
 
             <div>
 
                 <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
-                    Nombre
+                    Autor
                 </label>
 
                 <input
                     type="text"
-                    name="nombre"
-                    value="{{ request('nombre') }}"
-                    placeholder="Buscar usuario..."
+                    name="autor"
+                    value="{{ request('autor') }}"
+                    placeholder="Buscar autor..."
                     class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm shadow-sm ring-1 ring-outline-variant/10 min-w-[250px]">
 
             </div>
@@ -202,30 +189,28 @@
             <div>
 
                 <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
-                    Rol
+                    Desde
                 </label>
 
-                <select
-                    name="rol"
-                    class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm shadow-sm ring-1 ring-outline-variant/10 min-w-[220px]">
+                <input
+                    type="date"
+                    name="fecha_desde"
+                    value="{{ request('fecha_desde') }}"
+                    class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm shadow-sm ring-1 ring-outline-variant/10">
 
-                    <option value="">
-                        Todos los roles
-                    </option>
+            </div>
 
-                    @foreach($roles as $rol)
+            <div>
 
-                        <option
-                            value="{{ $rol->id }}"
-                            @selected(request('rol') == $rol->id)>
+                <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
+                    Hasta
+                </label>
 
-                            {{ $rol->nombre }}
-
-                        </option>
-
-                    @endforeach
-
-                </select>
+                <input
+                    type="date"
+                    name="fecha_hasta"
+                    value="{{ request('fecha_hasta') }}"
+                    class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm shadow-sm ring-1 ring-outline-variant/10">
 
             </div>
 
@@ -257,27 +242,19 @@
                     <tr>
 
                         <th class="px-6 py-5 text-xs font-bold uppercase">
-                            ID
+                            Fecha
                         </th>
 
                         <th class="px-6 py-5 text-xs font-bold uppercase">
-                            Usuario
+                            Autor
                         </th>
 
                         <th class="px-6 py-5 text-xs font-bold uppercase">
-                            Email
+                            Acción
                         </th>
 
                         <th class="px-6 py-5 text-xs font-bold uppercase">
-                            DNI
-                        </th>
-
-                        <th class="px-6 py-5 text-xs font-bold uppercase">
-                            Rol
-                        </th>
-                        
-                        <th class="px-6 py-5 text-xs font-bold uppercase">
-                            Acciones
+                            Descripción
                         </th>
 
                     </tr>
@@ -286,12 +263,14 @@
 
                 <tbody class="divide-y divide-outline-variant/10">
 
-                @forelse($usuarios as $usuario)
+                @forelse($logs as $log)
 
                     <tr class="hover:bg-surface-container-low transition-colors">
 
-                        <td class="px-6 py-5 font-semibold">
-                            {{ $usuario->id }}
+                        <td class="px-6 py-5">
+
+                            {{ $log->created_at->format('d/m/Y H:i') }}
+
                         </td>
 
                         <td class="px-6 py-5">
@@ -300,14 +279,16 @@
 
                                 <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
 
-                                    {{ strtoupper(substr($usuario->name,0,1)) }}
+                                    {{ strtoupper(substr($log->autor?->name ?? 'S',0,1)) }}
 
                                 </div>
 
                                 <div>
 
                                     <p class="font-bold">
-                                        {{ $usuario->name }}
+
+                                        {{ $log->autor?->name ?? 'Sistema' }}
+
                                     </p>
 
                                 </div>
@@ -317,32 +298,18 @@
                         </td>
 
                         <td class="px-6 py-5">
-                            {{ $usuario->email }}
-                        </td>
-
-                        <td class="px-6 py-5">
-                            {{ $usuario->dni }}
-                        </td>
-
-                        <td class="px-6 py-5">
 
                             <span class="px-3 py-1 rounded-full text-xs font-bold bg-surface-container-highest">
 
-                                {{ $usuario->rol->nombre ?? 'Sin rol' }}
+                                {{ $log->accion?->nombre }}
 
                             </span>
 
                         </td>
 
-                        <td>
+                        <td class="px-6 py-5">
 
-                            <a
-                                href="{{ route('usuarios.edit', $usuario->id) }}"
-                                class="px-3 py-1 rounded-lg bg-primary text-white text-sm">
-
-                                Editar
-
-                            </a>
+                            {{ $log->descripcion }}
 
                         </td>
 
@@ -352,9 +319,9 @@
 
                     <tr>
 
-                        <td colspan="5" class="text-center py-10 text-outline">
+                        <td colspan="4" class="text-center py-10 text-outline">
 
-                            No existen usuarios registrados.
+                            No existen reportes registrados.
 
                         </td>
 
@@ -376,16 +343,16 @@
                 <p class="text-sm text-outline">
 
                     Mostrando
-                    {{ $usuarios->firstItem() ?? 0 }}
+                    {{ $logs->firstItem() ?? 0 }}
                     -
-                    {{ $usuarios->lastItem() ?? 0 }}
+                    {{ $logs->lastItem() ?? 0 }}
                     de
-                    {{ $usuarios->total() }}
-                    usuarios
+                    {{ $logs->total() }}
+                    reportes
 
                 </p>
 
-                {{ $usuarios->withQueryString()->links() }}
+                {{ $logs->withQueryString()->links() }}
 
             </div>
 

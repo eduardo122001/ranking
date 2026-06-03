@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Rol;
+use App\Models\Log;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+//use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
@@ -43,12 +44,26 @@ class UsuarioController extends Controller
             'rol_id' => 'required'
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'dni' => $request->dni,
             'rol_id' => $request->rol_id,
             'password' => null
+        ]);
+
+        //DESPUES DE CREAR UN USUARIO SE CREA UN LOG (REPORTE)
+    
+        $user->load('rol');
+        $autor = auth()->user();
+
+        Log::create([
+            'autor_id' => auth()->id(),
+            'accion_id' => 4,
+            'entidad' => 'user',
+            'entidad_id' => $user->id,
+            'descripcion' => $autor->name .' creó el usuario ' . $user->name .
+                            ' con rol ' . $user->rol->nombre
         ]);
 
         return redirect()
@@ -81,6 +96,21 @@ class UsuarioController extends Controller
             'dni' => $request->dni,
             'rol_id' => $request->rol_id
         ]);
+
+        //DESPUES DE EDITAR UN USUARIO SE CREA UN LOG (REPORTE)
+
+        $user->load('rol');
+        $autor = auth()->user();
+
+        Log::create([  
+            'autor_id' => auth()->id(),
+            'accion_id' => 5,
+            'entidad' => 'user',
+            'entidad_id' => $user->id,
+            'descripcion' => $autor->name . ' actualizó el usuario ' . $user->name .
+                            ' con rol ' . $user->rol->nombre
+        ]);
+
 
         return redirect()
             ->route('usuarios.index')

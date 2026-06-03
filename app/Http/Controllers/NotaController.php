@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 use App\Imports\NotasImport;
 use App\Models\Semestre;
+use App\Models\Log;
 
 class NotaController extends Controller
 {
@@ -75,6 +76,24 @@ class NotaController extends Controller
                 $grupo['semestre_estudiante']
             ]);
         }
+
+        //DESPUES DE SUBIR UN EXCEL DE NOTAS SE CREA UN LOG (REPORTE)
+
+        $autor = auth()->user();
+        $nombreArchivo = $request->file('file')->getClientOriginalName();
+        $semestre = Semestre::find($semestreId);    
+
+        Log::create([
+            'autor_id' => $autor->id,
+            'accion_id' => 1,
+            'entidad' => 'semestre',
+            'entidad_id' => $semestreId,
+            'descripcion' => $autor->name .
+                            ' subió el archivo ' .
+                            $nombreArchivo .
+                            ' para el semestre ' .
+                            $semestre->nombre
+        ]);
 
         return back()->with(
             'success',

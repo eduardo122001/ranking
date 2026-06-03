@@ -7,6 +7,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PesoController;
 use App\Http\Controllers\RankingController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\LogController;
+
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -79,6 +81,8 @@ Route::get('/usuarios/{user}/edit', [UsuarioController::class, 'edit'])
 Route::put('/usuarios/{user}', [UsuarioController::class, 'update'])
     ->name('usuarios.update');
 
+Route::get('/reportes', [LogController::class, 'index'])
+    ->name('reportes.index');
 
 
 require __DIR__.'/auth.php';

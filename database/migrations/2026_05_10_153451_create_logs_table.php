@@ -15,11 +15,19 @@ return new class extends Migration
 
             $table->id();
 
-            $table->foreignId('autor_id')->nullable()->constrained('users');
+            $table->foreignId('autor_id')
+                ->nullable()
+                ->constrained('users');
 
-            $table->foreignId('accion_id')->constrained('acciones');
+            $table->foreignId('accion_id')
+                ->constrained('acciones');
 
-            $table->string('descripcion', 100);
+            $table->string('entidad', 50);
+
+            $table->unsignedBigInteger('entidad_id')
+                ->nullable();
+
+            $table->string('descripcion', 255);
 
             $table->timestamps();
         });
