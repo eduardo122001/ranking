@@ -11,6 +11,15 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
+        // Redirige según rol
+        if ($user->rol_id == 3) {
+            return redirect()->route('tutor.dashboard');
+        }
+
+        if ($user->rol_id == 2) {
+            return redirect()->route('supervisor.dashboard');
+        }
+
         // Cargar la nota del estudiante con su semestre y el peso asociado a ese semestre
         $registro = Nota::with('semestre.peso')
             ->where('estudiante_id', $user->id)

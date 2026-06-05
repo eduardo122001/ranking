@@ -139,12 +139,18 @@
 <h2 class="font-[Manrope] font-extrabold text-[#001360] dark:text-blue-100 text-2xl tracking-tight">Ranking de Estudiantes</h2>
 <p class="text-sm font-label text-outline">Consolidado Académico 2024-II</p>
 </div>
+
+
 <div class="flex items-center gap-6">
+
+
 <!-- Search Bar -->
 <div class="relative focus-within:ring-2 focus-within:ring-[#001360]/20 rounded-full transition-all">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
 <input class="pl-12 pr-6 py-2.5 bg-surface-container-highest border-none rounded-full w-80 text-sm focus:ring-0 placeholder:text-outline/60" placeholder="Buscar estudiante..." type="text"/>
 </div>
+
+
 <div class="flex items-center gap-4 border-l border-outline-variant/30 pl-6">
 <button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
 <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
@@ -153,6 +159,16 @@
 <span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
 </button>
 </div>
+<div class="mt-8 hidden lg:block border-t border-gray-100 pt-4">
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-rose-500 transition-colors hover:bg-rose-50 hover:text-rose-700">
+            <span>⎋</span>
+            Cerrar sesión
+        </button>
+    </form>
+</div>
+
 </div>
 </header>
 

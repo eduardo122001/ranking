@@ -41,6 +41,12 @@ class GoogleController extends Controller
 
             return redirect('/upload');
         }
+        // supervisor
+        if ($user->rol_id == 2) {
+
+            return redirect('/dashboard');
+        }
+
         // superadministrador
         if ($user->rol_id == 1) {
 

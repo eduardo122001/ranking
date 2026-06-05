@@ -62,6 +62,7 @@
                         <span class="text-slate-300">🔔</span>
                         <span class="text-slate-300">⚙</span>
                     </div>
+                    
                 </div>
             </header>
 

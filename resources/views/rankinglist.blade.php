@@ -153,6 +153,16 @@
 <span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
 </button>
 </div>
+<div class="mt-8 hidden lg:block border-t border-gray-100 pt-4">
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-rose-500 transition-colors hover:bg-rose-50 hover:text-rose-700">
+            <span>⎋</span>
+            Cerrar sesión
+        </button>
+    </form>
+</div>
+
 </div>
 </header>
 <!-- Content Area -->
