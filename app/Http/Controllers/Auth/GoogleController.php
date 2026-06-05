@@ -17,46 +17,54 @@ class GoogleController extends Controller
 
     // Manejar el callback
     public function callback()
-{
-    try {
-        $googleUser = Socialite::driver('google')->user();
+    {
+        try {
+            $googleUser = Socialite::driver('google')->user();
+            
+            \Log::info('Google user data:', [
+                'email' => $googleUser->getEmail(),
+                'name' => $googleUser->getName(),
+            ]);
 
-        // Busca el usuario por email, NO crea uno nuevo
-        $user = User::where('email', $googleUser->getEmail())->first();
+            // Busca el usuario por email
+            $user = User::where('email', $googleUser->getEmail())->first();
 
-        if (!$user) {
-            return redirect('/login')->with('error', 'Usuario no aceptado.');
+            if (!$user) {
+                \Log::error('User not found with email: ' . $googleUser->getEmail());
+                return redirect('/login')->with('error', 'Usuario no encontrado.');
+            }
+
+            Auth::login($user);
+            
+            \Log::info('User logged in with role_id: ' . $user->rol_id);
+
+            // Tutor (rol_id = 1)
+            if ($user->rol_id == 1) {
+                return redirect('/upload');
+            }
+
+            // Supervisor (rol_id = 2)
+            if ($user->rol_id == 2) {
+                return redirect('/rankinglist');
+            }
+
+            // Estudiante (rol_id = 3)
+            if ($user->rol_id == 3) {
+                return redirect('/dashboard');
+            }
+
+            // Superadmin (rol_id = 4)
+            if ($user->rol_id == 4) {
+                return redirect('/rankinglist');
+            }
+
+            // Otros roles
+            Auth::logout();
+            return redirect('/login')->with('error', 'Rol no autorizado.');
+
+        } catch (\Exception $e) {
+            \Log::error('Google auth error: ' . $e->getMessage());
+            return redirect('/login')->with('error', 'Error: ' . $e->getMessage());
         }
-
-        Auth::login($user);
-
-        // Estudiante
-        if ($user->rol_id == 4) {
-
-            return redirect('/dashboard');
-        }
-
-        // Tutor
-        if ($user->rol_id == 3) {
-
-            return redirect('/upload');
-        }
-        // superadministrador
-        if ($user->rol_id == 1) {
-
-            //return redirect('/pesos');
-            return redirect('/rankinglist');
-        }
-        // Otros roles
-        Auth::logout();
-
-        return redirect('/login')->with(
-            'error',
-            'Rol no autorizado.'
-        );
-
-    } catch (\Exception $e) {
-        return redirect('/login')->with('error', 'Error al autenticar con Google.');
     }
-}
 }

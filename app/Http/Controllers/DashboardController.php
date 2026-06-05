@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
@@ -11,21 +10,19 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        // Buscar nota del estudiante logueado
-        $registro = Nota::where('estudiante_id', $user->id)
-            ->latest()
-            ->first();
+        // Redirige según rol
+        if ($user->rol_id == 1) {
+            return redirect()->route('tutor.dashboard');
+        }
 
-        // Historial del estudiante
-        $historial = Nota::where('estudiante_id', $user->id)
-            ->latest()
-            ->take(5)
-            ->get();
+        if ($user->rol_id == 2) {
+            return redirect()->route('supervisor.dashboard');
+        }
 
-        return view('dashboard', compact(
-            'user',
-            'registro',
-            'historial'
-        ));
+        // Rol estudiante u otro: muestra dashboard normal
+        $registro = Nota::where('estudiante_id', $user->id)->latest()->first();
+        $historial = Nota::where('estudiante_id', $user->id)->latest()->take(5)->get();
+
+        return view('dashboard', compact('user', 'registro', 'historial'));
     }
 }
