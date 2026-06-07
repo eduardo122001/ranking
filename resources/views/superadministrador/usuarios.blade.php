@@ -1,13 +1,17 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 
 <html class="light" lang="es"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Ranking de Estudiantes | Curador Académico</title>
+<title>Usuarios | Curador Académico</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;family=Public+Sans:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <style>
+        /*-----------------------------------------------------------------------------------*/
+        /* OJO: ESTA ES LA PANTALLA PARA VER TODOS LOS USUARIOS, USADO EN SUPERADMINISTRADOR */
+        /*-----------------------------------------------------------------------------------*/
+
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
@@ -100,25 +104,29 @@
 <p class="text-xs font-label uppercase tracking-widest text-outline mt-1">Portal Institucional</p>
 </div>
 <nav class="flex-1 space-y-1">
-<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="#">
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.dashboard') }}">
 <span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="home">home</span>
                 Inicio
             </a>
-<a class="flex items-center border-l-4 border-[#001360] bg-slate-200/50 dark:bg-slate-800/50 text-[#001360] dark:text-blue-300 font-bold px-6 py-4 transition-all duration-200" href="{{ route('ranking.index') }}">
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.ranking.index') }}">
 <span class="material-symbols-outlined mr-3" data-icon="leaderboard" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
                 Ranking
             </a>
-<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('pesos.index') }}">
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.pesos.index') }}">
 <span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="functions">functions</span>
                 Fórmulas
             </a>
-<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('reportes.index') }}">
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.reportes.index') }}">
 <span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="analytics">analytics</span>
                 Reportes
             </a>
-<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('usuarios.index') }}">
+<a class="flex items-center border-l-4 border-[#001360] bg-slate-200/50 dark:bg-slate-800/50 text-[#001360] dark:text-blue-300 font-bold px-6 py-4 transition-all duration-200" href="{{ route('superadministrador.usuarios.index') }}">
 <span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="group">group</span>
                 Usuarios
+            </a>
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.semestres.index') }}">
+<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="functions">calendar_month</span>
+                semestres
             </a>
 </nav>
 <div class="px-6 mt-auto">
@@ -136,7 +144,7 @@
 <!-- Top App Bar -->
 <header class="w-full sticky top-0 z-40 bg-[#fbf8ff] dark:bg-slate-950 shadow-sm dark:shadow-none flex justify-between items-center px-12 py-6">
 <div class="flex flex-col">
-<h2 class="font-[Manrope] font-extrabold text-[#001360] dark:text-blue-100 text-2xl tracking-tight">Ranking de Estudiantes</h2>
+<h2 class="font-[Manrope] font-extrabold text-[#001360] dark:text-blue-100 text-2xl tracking-tight">Usuarios</h2>
 <p class="text-sm font-label text-outline">Consolidado Académico 2024-II</p>
 </div>
 <div class="flex items-center gap-6">
@@ -162,225 +170,244 @@
         </button>
     </form>
 </div>
-
 </div>
 </header>
 <!-- Content Area -->
+
 <div class="px-12 py-8 bg-surface-container-low min-h-[calc(100vh-100px)]">
-<!-- Quick Filters & Stats Row -->
-<div class="flex flex-wrap items-center justify-between gap-4 mb-8">
 
-    <form method="GET"
-          action="{{ route('ranking.index') }}"
-          class="flex gap-3 flex-wrap">
+    <div class="flex justify-end mb-6">
 
-        {{-- Carrera --}}
-        <div class="group">
+        <a
+            href="{{ route('superadministrador.usuarios.create') }}"
+            class="px-5 py-2 bg-primary text-white rounded-xl font-semibold">
 
-            <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
-                Carrera
-            </label>
+            + Nuevo Usuario
 
-            <select
-                name="carrera"
-                onchange="this.form.submit()"
-                class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm font-medium shadow-sm ring-1 ring-outline-variant/10 min-w-[180px]">
+        </a>
 
-                <option value="">Todos</option>
+    </div>
 
-                @foreach($carreras as $carrera)
 
-                    <option
-                        value="{{ $carrera->id }}"
-                        @selected(request('carrera') == $carrera->id)>
+    <!-- Filtros -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
 
-                        {{ $carrera->nombre }}
+        <form
+            method="GET"
+            action="{{ route('superadministrador.usuarios.index') }}"
+            class="flex gap-4 flex-wrap">
 
-                    </option>
+            <div>
 
-                @endforeach
+                <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
+                    Nombre
+                </label>
 
-            </select>
+                <input
+                    type="text"
+                    name="nombre"
+                    value="{{ request('nombre') }}"
+                    placeholder="Buscar usuario..."
+                    class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm shadow-sm ring-1 ring-outline-variant/10 min-w-[250px]">
 
-        </div>
-
-        {{-- Semestre académico --}}
-        <div class="group">
-
-            <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
-                Semestre
-            </label>
-
-            <select
-                name="semestre"
-                onchange="this.form.submit()"
-                class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm font-medium shadow-sm ring-1 ring-outline-variant/10 min-w-[180px]">
-
-                <option value="">Todos</option>
-
-                @foreach($semestres as $semestre)
-
-                    <option
-                        value="{{ $semestre->id }}"
-                        @selected(request('semestre') == $semestre->id)>
-
-                        {{ $semestre->nombre }}
-
-                    </option>
-
-                @endforeach
-
-            </select>
-
-        </div>
-
-        {{-- Semestre estudiante --}}
-        <div class="group">
-
-            <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
-                Semestre Est.
-            </label>
-
-            <select
-                name="semestre_estudiante"
-                onchange="this.form.submit()"
-                class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm font-medium shadow-sm ring-1 ring-outline-variant/10 min-w-[180px]">
-
-                <option value="">Todos</option>
-
-                @foreach($semestresEstudiante as $sem)
-
-                    <option
-                        value="{{ $sem }}"
-                        @selected(request('semestre_estudiante') == $sem)>
-
-                        {{ $sem }}
-
-                    </option>
-
-                @endforeach
-
-            </select>
-
-        </div>
-
-    </form>
-
-</div>
-<!-- Ranking Table Container -->
-<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm ring-1 ring-outline-variant/15">
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead class="bg-surface-container text-on-surface-variant">
-<tr>
-<th class="px-8 py-5 text-xs font-bold uppercase tracking-wider font-label">Rango</th>
-<th class="px-6 py-5 text-xs font-bold uppercase tracking-wider font-label">Estudiante</th>
-<th class="px-6 py-5 text-xs font-bold uppercase tracking-wider font-label">Curso</th>
-<th class="px-6 py-5 text-xs font-bold uppercase tracking-wider font-label">Semestre</th>
-<th class="px-8 py-5 text-xs font-bold uppercase tracking-wider font-label text-right">Puntaje Total</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-outline-variant/10">
-
-@forelse($ranking as $nota)
-
-<tr class="{{ $loop->first ? 'bg-primary-fixed/30' : '' }} hover:bg-surface-container-low transition-colors">
-
-    <td class="px-8 py-6">
-        <span class="text-2xl font-display font-black {{ $loop->first ? 'text-primary' : 'text-outline/40' }}">
-            #{{ ($ranking->currentPage() - 1) * $ranking->perPage() + $loop->iteration }}
-        </span>
-    </td>
-
-    <td class="px-6 py-6">
-        <div class="flex items-center gap-4">
-
-            <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm">
-                {{ strtoupper(substr($nota->estudiante->name ?? 'S',0,1)) }}
             </div>
 
             <div>
-                <p class="font-bold text-on-surface">
-                    {{ $nota->estudiante->name ?? 'Sin nombre' }}
+
+                <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
+                    Rol
+                </label>
+
+                <select
+                    name="rol"
+                    class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm shadow-sm ring-1 ring-outline-variant/10 min-w-[220px]">
+
+                    <option value="">
+                        Todos los roles
+                    </option>
+
+                    @foreach($roles as $rol)
+
+                        <option
+                            value="{{ $rol->id }}"
+                            @selected(request('rol') == $rol->id)>
+
+                            {{ $rol->nombre }}
+
+                        </option>
+
+                    @endforeach
+
+                </select>
+
+            </div>
+
+            <div class="flex items-end">
+
+                <button
+                    type="submit"
+                    class="px-5 py-2 bg-primary text-white rounded-xl font-semibold">
+
+                    Filtrar
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- Tabla -->
+    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm ring-1 ring-outline-variant/15">
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-left border-collapse">
+
+                <thead class="bg-surface-container text-on-surface-variant">
+
+                    <tr>
+
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            ID
+                        </th>
+
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            Usuario
+                        </th>
+
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            Email
+                        </th>
+
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            DNI
+                        </th>
+
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            Rol
+                        </th>
+                        
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            Acciones
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="divide-y divide-outline-variant/10">
+
+                @forelse($usuarios as $usuario)
+
+                    <tr class="hover:bg-surface-container-low transition-colors">
+
+                        <td class="px-6 py-5 font-semibold">
+                            {{ $usuario->id }}
+                        </td>
+
+                        <td class="px-6 py-5">
+
+                            <div class="flex items-center gap-4">
+
+                                <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
+
+                                    {{ strtoupper(substr($usuario->name,0,1)) }}
+
+                                </div>
+
+                                <div>
+
+                                    <p class="font-bold">
+                                        {{ $usuario->name }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td class="px-6 py-5">
+                            {{ $usuario->email }}
+                        </td>
+
+                        <td class="px-6 py-5">
+                            {{ $usuario->dni }}
+                        </td>
+
+                        <td class="px-6 py-5">
+
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-surface-container-highest">
+
+                                {{ $usuario->rol->nombre ?? 'Sin rol' }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="{{ route('superadministrador.usuarios.edit', $usuario->id) }}"
+                                class="px-3 py-1 rounded-lg bg-primary text-white text-sm">
+
+                                Editar
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                @empty
+
+                    <tr>
+
+                        <td colspan="5" class="text-center py-10 text-outline">
+
+                            No existen usuarios registrados.
+
+                        </td>
+
+                    </tr>
+
+                @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- Paginación -->
+        <div class="bg-surface-container-lowest px-8 py-4 border-t border-outline-variant/10">
+
+            <div class="flex justify-between items-center">
+
+                <p class="text-sm text-outline">
+
+                    Mostrando
+                    {{ $usuarios->firstItem() ?? 0 }}
+                    -
+                    {{ $usuarios->lastItem() ?? 0 }}
+                    de
+                    {{ $usuarios->total() }}
+                    usuarios
+
                 </p>
 
-                <p class="text-xs text-outline font-data">
-                    ID: {{ $nota->estudiante->id ?? '-' }}
-                </p>
+                {{ $usuarios->withQueryString()->links() }}
+
             </div>
 
         </div>
-    </td>
-
-    <td class="px-6 py-6 text-sm font-medium text-on-surface-variant">
-        {{ $nota->carrera->nombre ?? '-' }}
-    </td>
-
-    <td class="px-6 py-6 text-sm text-outline font-data">
-        {{ $nota->semestre->nombre ?? '-' }}
-    </td>
-
-    <td class="px-8 py-6 text-right">
-
-        <div class="inline-flex flex-col items-end">
-
-            <span class="text-xl font-display font-extrabold">
-                {{ number_format($nota->promedio, 2) }}
-            </span>
-
-            @if($nota->promedio >= 19.00)
-                <span class="text-[10px] px-2 py-0.5 bg-tertiary-fixed rounded-full font-bold">
-                    EXCELENCIA
-                </span>
-            @elseif($nota->promedio >= 18.00)
-                <span class="text-[10px] px-2 py-0.5 bg-tertiary-fixed/40 rounded-full font-bold">
-                    SOBRESALIENTE
-                </span>
-            @else
-                <span class="text-[10px] px-2 py-0.5 bg-surface-container-highest rounded-full font-bold">
-                    DESTACADO
-                </span>
-            @endif
-
-        </div>
-
-    </td>
-
-</tr>
-
-@empty
-
-<tr>
-    <td colspan="5" class="text-center py-10 text-outline">
-        No existen estudiantes registrados.
-    </td>
-</tr>
-
-@endforelse
-
-</tbody></table>
-</div>
-<!-- Pagination -->
-<div class="bg-surface-container-lowest px-8 py-4 border-t border-outline-variant/10">
-
-    <div class="flex justify-between items-center">
-
-        <p class="text-sm text-outline">
-            Mostrando
-            {{ $ranking->firstItem() ?? 0 }}
-            -
-            {{ $ranking->lastItem() ?? 0 }}
-            de
-            {{ $ranking->total() }}
-            estudiantes
-        </p>
-
-        {{ $ranking->links() }}
 
     </div>
 
 </div>
-</div>
+
 <!-- Dashboard Insight Card -->
 </div>
 </main>

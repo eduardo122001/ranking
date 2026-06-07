@@ -39,7 +39,7 @@ class GoogleController extends Controller
         // Tutor
         if ($user->rol_id == 3) {
 
-            return redirect('/upload');
+            return redirect('/dashboard');
         }
         // supervisor
         if ($user->rol_id == 2) {
@@ -50,8 +50,7 @@ class GoogleController extends Controller
         // superadministrador
         if ($user->rol_id == 1) {
 
-            //return redirect('/pesos');
-            return redirect('/rankinglist');
+            return redirect('/dashboard');
         }
         // Otros roles
         Auth::logout();

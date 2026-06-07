@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <style>
         /*-----------------------------------------------------------------------------------*/
-        /* OJO: ESTA ES LA PANTALLA PARA VER TODOS LOS USUARIOS, USADO EN SUPERADMINISTRADOR */
+        /* OJO: ESTA ES LA PANTALLA PARA VER TODOS LOS USUARIOS, USADO EN supervisor */
         /*-----------------------------------------------------------------------------------*/
 
         .material-symbols-outlined {
@@ -128,7 +128,7 @@
 <!-- Top App Bar -->
 <header class="w-full sticky top-0 z-40 bg-[#fbf8ff] dark:bg-slate-950 shadow-sm dark:shadow-none flex justify-between items-center px-12 py-6">
 <div class="flex flex-col">
-<h2 class="font-[Manrope] font-extrabold text-[#001360] dark:text-blue-100 text-2xl tracking-tight">Usuarios</h2>
+<h2 class="font-[Manrope] font-extrabold text-[#001360] dark:text-blue-100 text-2xl tracking-tight">Reportes</h2>
 <p class="text-sm font-label text-outline">Consolidado Académico 2024-II</p>
 </div>
 <div class="flex items-center gap-6">
@@ -157,13 +157,260 @@
 </div>
 </header>
 <!-- Content Area -->
-
 <div class="px-12 py-8 bg-surface-container-low min-h-[calc(100vh-100px)]">
+<!-- Quick Filters & Stats Row -->
+<div class="flex flex-wrap items-center justify-between gap-4 mb-8">
 
-    BIENVENIDO Supervisor
+    <form method="GET"
+          action="{{ route('supervisor.ranking.index') }}"
+          class="flex gap-3 flex-wrap">
+
+        {{-- Carrera --}}
+        <div class="group">
+
+            <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
+                Carrera
+            </label>
+
+            <select
+                name="carrera"
+                onchange="this.form.submit()"
+                class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm font-medium shadow-sm ring-1 ring-outline-variant/10 min-w-[180px]">
+
+                <option value="">seleccione</option>
+
+                @foreach($carreras as $carrera)
+
+                    <option
+                        value="{{ $carrera->id }}"
+                        @selected(request('carrera') == $carrera->id)>
+
+                        {{ $carrera->nombre }}
+
+                    </option>
+
+                @endforeach
+
+            </select>
+
+        </div>
+
+        {{-- Semestre académico --}}
+        <div class="group">
+
+            <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
+                Semestre
+            </label>
+
+            <select
+                name="semestre"
+                onchange="this.form.submit()"
+                class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm font-medium shadow-sm ring-1 ring-outline-variant/10 min-w-[180px]">
+
+                <option value="">seleccione</option>
+
+                @foreach($semestres as $semestre)
+
+                    <option
+                        value="{{ $semestre->id }}"
+                        @selected(request('semestre') == $semestre->id)>
+
+                        {{ $semestre->nombre }}
+
+                    </option>
+
+                @endforeach
+
+            </select>
+
+        </div>
+
+        {{-- Semestre estudiante --}}
+        <div class="group">
+
+            <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
+                Semestre Est.
+            </label>
+
+            <select
+                name="semestre_estudiante"
+                onchange="this.form.submit()"
+                class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm font-medium shadow-sm ring-1 ring-outline-variant/10 min-w-[180px]">
+
+                <option value="">seleccione</option>
+
+                @foreach($semestresEstudiante as $sem)
+
+                    <option
+                        value="{{ $sem }}"
+                        @selected(request('semestre_estudiante') == $sem)>
+
+                        {{ $sem }}
+
+                    </option>
+
+                @endforeach
+
+            </select>
+
+        </div>
+
+    </form>
 
 </div>
+<!-- Ranking Table Container -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm ring-1 ring-outline-variant/15">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container text-on-surface-variant">
+<tr>
+<th class="px-8 py-5 text-xs font-bold uppercase tracking-wider font-label">Rango</th>
+<th class="px-6 py-5 text-xs font-bold uppercase tracking-wider font-label">Estudiante</th>
+<th class="px-6 py-5 text-xs font-bold uppercase tracking-wider font-label">Carrera</th>
+<th class="px-6 py-5 text-xs font-bold uppercase tracking-wider font-label">Semestre</th>
+<th class="px-6 py-5 text-xs font-bold uppercase tracking-wider font-label">Rendimiento</th>
+<th class="px-6 py-5 text-xs font-bold uppercase tracking-wider font-label">Comportamiento</th>
+<th class="px-6 py-5 text-xs font-bold uppercase tracking-wider font-label">Pagos</th>
+<th class="px-6 py-5 text-xs font-bold uppercase tracking-wider font-label">Referente</th>
+<th class="px-8 py-5 text-xs font-bold uppercase tracking-wider font-label text-right">Puntaje Total</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
 
+@if($ranking)
+
+    @forelse($ranking as $nota)
+
+    <tr class="{{ $loop->first ? 'bg-primary-fixed/30' : '' }} hover:bg-surface-container-low transition-colors">
+
+        <td class="px-8 py-6">
+            <span class="text-2xl font-display font-black {{ $loop->first ? 'text-primary' : 'text-outline/40' }}">
+                #{{ ($ranking->currentPage() - 1) * $ranking->perPage() + $loop->iteration }}
+            </span>
+        </td>
+
+        <td class="px-6 py-6">
+            <div class="flex items-center gap-4">
+
+                <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm">
+                    {{ strtoupper(substr($nota->estudiante->name ?? 'S',0,1)) }}
+                </div>
+
+                <div>
+                    <p class="font-bold text-on-surface">
+                        {{ $nota->estudiante->name ?? 'Sin nombre' }}
+                    </p>
+
+                    <p class="text-xs text-outline font-data">
+                        ID: {{ $nota->estudiante->id ?? '-' }}
+                    </p>
+                </div>
+
+            </div>
+        </td>
+
+        <td class="px-6 py-6 text-sm font-medium text-on-surface-variant">
+            {{ $nota->carrera->nombre ?? '-' }}
+        </td>
+
+        <td class="px-6 py-6 text-sm text-outline font-data">
+            {{ $nota->semestre->nombre ?? '-' }}
+        </td>
+
+        <td class="px-6 py-6 text-sm text-outline font-data">
+            {{ number_format($nota->rendimiento, 0) }}
+        </td>
+        <td class="px-6 py-6 text-sm text-outline font-data">
+            {{ number_format($nota->comportamiento, 0) }}
+        </td>
+        <td class="px-6 py-6 text-sm text-outline font-data">
+            {{ number_format($nota->pagos, 0) }}
+        </td>
+        <td class="px-6 py-6 text-sm text-outline font-data">
+            {{ number_format($nota->referente, 0) }}
+        </td>
+
+        <td class="px-8 py-6 text-right">
+
+            <div class="inline-flex flex-col items-end">
+
+                <span class="text-xl font-display font-extrabold">
+                    {{ number_format($nota->promedio, 0) }}
+                </span>
+
+                @if($nota->promedio >= 19.00*100)
+                    <span class="text-[10px] px-2 py-0.5 bg-tertiary-fixed rounded-full font-bold">
+                        EXCELENCIA
+                    </span>
+                @elseif($nota->promedio >= 15.00*100)
+                    <span class="text-[10px] px-2 py-0.5 bg-tertiary-fixed/40 rounded-full font-bold">
+                        SOBRESALIENTE
+                    </span>
+                @else
+                    <span class="text-[10px] px-2 py-0.5 bg-surface-container-highest rounded-full font-bold">
+                        NORMAL
+                    </span>
+                @endif
+
+            </div>
+
+        </td>
+
+    </tr>
+
+    @empty
+
+    <tr>
+        <td colspan="5" class="text-center py-10 text-outline">
+            No existen estudiantes registrados.
+        </td>
+    </tr>
+
+    @endforelse
+
+@else
+
+<tr>
+    <td colspan="5" class="text-center py-10 text-outline">
+        Seleccione Carrera, Semestre y Semestre del Estudiante para generar el ranking.
+    </td>
+</tr>
+
+@endif
+
+</tbody></table>
+</div>
+<!-- Pagination -->
+<div class="bg-surface-container-lowest px-8 py-4 border-t border-outline-variant/10">
+
+    @if($ranking)
+
+    <div class="flex justify-between items-center">
+
+        <p class="text-sm text-outline">
+            Mostrando
+            {{ $ranking->firstItem() ?? 0 }}
+            -
+            {{ $ranking->lastItem() ?? 0 }}
+            de
+            {{ $ranking->total() }}
+            estudiantes
+        </p>
+
+        {{ $ranking->links() }}
+
+    </div>
+
+    @else
+
+    <div class="text-center text-sm text-outline">
+        Seleccione los tres filtros para visualizar el ranking.
+    </div>
+
+    @endif
+
+</div>
+</div>
 <!-- Dashboard Insight Card -->
 </div>
 </main>

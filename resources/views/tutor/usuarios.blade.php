@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <style>
         /*-----------------------------------------------------------------------------------*/
-        /* OJO: ESTA ES LA PANTALLA PARA VER TODOS LOS USUARIOS, USADO EN SUPERADMINISTRADOR */
+        /* OJO: ESTA ES LA PANTALLA PARA VER TODOS LOS USUARIOS, USADO EN tutor */
         /*-----------------------------------------------------------------------------------*/
 
         .material-symbols-outlined {
@@ -104,14 +104,23 @@
 <p class="text-xs font-label uppercase tracking-widest text-outline mt-1">Portal Institucional</p>
 </div>
 <nav class="flex-1 space-y-1">
-<a class="flex items-center border-l-4 border-[#001360] bg-slate-200/50 dark:bg-slate-800/50 text-[#001360] dark:text-blue-300 font-bold px-6 py-4 transition-all duration-200" href="{{ route('supervisor.dashboard') }}">
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('tutor.dashboard') }}">
 <span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="home">home</span>
                 Inicio
             </a>
-<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('supervisor.ranking.index') }}">
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('tutor.ranking.index') }}">
 <span class="material-symbols-outlined mr-3" data-icon="leaderboard" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
                 Ranking
             </a>
+<a class="flex items-center border-l-4 border-[#001360] bg-slate-200/50 dark:bg-slate-800/50 text-[#001360] dark:text-blue-300 font-bold px-6 py-4 transition-all duration-200" href="{{ route('tutor.usuarios.index') }}">
+<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="group">group</span>
+                Usuarios
+            </a>
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('tutor.upload.index') }}">
+<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="group">file_upload</span>
+                subir
+            </a>
+
 </nav>
 <div class="px-6 mt-auto">
 <div class="mt-6 flex items-center gap-3 py-4 border-t border-outline-variant/20">
@@ -156,13 +165,214 @@
 </div>
 </div>
 </header>
-<!-- Content Area -->
+
+<!-- content area -->
 
 <div class="px-12 py-8 bg-surface-container-low min-h-[calc(100vh-100px)]">
 
-    BIENVENIDO Supervisor
+    <div class="flex justify-end mb-6">
+
+        <a
+            href="{{ route('tutor.usuarios.create') }}"
+            class="px-5 py-2 bg-primary text-white rounded-xl font-semibold">
+
+            + Nuevo Usuario
+
+        </a>
+
+    </div>
+
+
+    <!-- Filtros -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+
+        <form
+            method="GET"
+            action="{{ route('tutor.usuarios.index') }}"
+            class="flex gap-4 flex-wrap">
+
+            <div>
+
+                <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
+                    Nombre
+                </label>
+
+                <input
+                    type="text"
+                    name="nombre"
+                    value="{{ request('nombre') }}"
+                    placeholder="Buscar usuario..."
+                    class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm shadow-sm ring-1 ring-outline-variant/10 min-w-[250px]">
+
+            </div>
+
+            <div class="flex items-end">
+
+                <button
+                    type="submit"
+                    class="px-5 py-2 bg-primary text-white rounded-xl font-semibold">
+
+                    Filtrar
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- Tabla -->
+    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm ring-1 ring-outline-variant/15">
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-left border-collapse">
+
+                <thead class="bg-surface-container text-on-surface-variant">
+
+                    <tr>
+
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            ID
+                        </th>
+
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            Usuario
+                        </th>
+
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            Email
+                        </th>
+
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            DNI
+                        </th>
+
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            Rol
+                        </th>
+                        
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            Acciones
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="divide-y divide-outline-variant/10">
+
+                @forelse($usuarios as $usuario)
+
+                    <tr class="hover:bg-surface-container-low transition-colors">
+
+                        <td class="px-6 py-5 font-semibold">
+                            {{ $usuario->id }}
+                        </td>
+
+                        <td class="px-6 py-5">
+
+                            <div class="flex items-center gap-4">
+
+                                <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
+
+                                    {{ strtoupper(substr($usuario->name,0,1)) }}
+
+                                </div>
+
+                                <div>
+
+                                    <p class="font-bold">
+                                        {{ $usuario->name }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td class="px-6 py-5">
+                            {{ $usuario->email }}
+                        </td>
+
+                        <td class="px-6 py-5">
+                            {{ $usuario->dni }}
+                        </td>
+
+                        <td class="px-6 py-5">
+
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-surface-container-highest">
+
+                                {{ $usuario->rol->nombre ?? 'Sin rol' }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a
+                                href="{{ route('tutor.usuarios.edit', $usuario->id) }}"
+                                class="px-3 py-1 rounded-lg bg-primary text-white text-sm">
+
+                                Editar
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                @empty
+
+                    <tr>
+
+                        <td colspan="5" class="text-center py-10 text-outline">
+
+                            No existen usuarios registrados.
+
+                        </td>
+
+                    </tr>
+
+                @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- Paginación -->
+        <div class="bg-surface-container-lowest px-8 py-4 border-t border-outline-variant/10">
+
+            <div class="flex justify-between items-center">
+
+                <p class="text-sm text-outline">
+
+                    Mostrando
+                    {{ $usuarios->firstItem() ?? 0 }}
+                    -
+                    {{ $usuarios->lastItem() ?? 0 }}
+                    de
+                    {{ $usuarios->total() }}
+                    usuarios
+
+                </p>
+
+                {{ $usuarios->withQueryString()->links() }}
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
+    
+
 
 <!-- Dashboard Insight Card -->
 </div>

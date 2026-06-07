@@ -91,20 +91,23 @@
             <p class="text-xs font-label uppercase tracking-widest text-outline mt-1">Portal Institucional</p>
         </div>
         <nav class="flex-1 space-y-1">
-            <a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="#">
+            <a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.dashboard') }}">
                 <span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="home">home</span> Inicio
             </a>
-            <a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('ranking.index') }}">
+            <a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.ranking.index') }}">
                 <span class="material-symbols-outlined mr-3" data-icon="leaderboard">leaderboard</span> Ranking
             </a>
-            <a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('pesos.index') }}">
+            <a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.pesos.index') }}">
                 <span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="functions">functions</span> Fórmulas
             </a>
-            <a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('reportes.index') }}">
+            <a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.reportes.index') }}">
                 <span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="analytics">analytics</span> Reportes
             </a>
-            <a class="flex items-center border-l-4 border-[#001360] bg-slate-200/50 dark:bg-slate-800/50 text-[#001360] dark:text-blue-300 font-bold px-6 py-4 transition-all duration-200" href="{{ route('usuarios.index') }}">
+            <a class="flex items-center border-l-4 border-[#001360] bg-slate-200/50 dark:bg-slate-800/50 text-[#001360] dark:text-blue-300 font-bold px-6 py-4 transition-all duration-200" href="{{ route('superadministrador.usuarios.index') }}">
                 <span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span> Usuarios
+            </a>
+            <a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.semestres.index') }}">
+            <span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="functions">calendar_month</span> semestres
             </a>
         </nav>
         <div class="px-6 mt-auto">
@@ -126,7 +129,7 @@
             </div>
             
             <div>
-                <form method="POST" action="{{ route('usuarios.destroy', $user->id) }}" onsubmit="return confirm('¿Está completamente seguro de eliminar este usuario?');">
+                <form method="POST" action="{{ route('superadministrador.usuarios.destroy', $user->id) }}" onsubmit="return confirm('¿Está completamente seguro de eliminar este usuario?');">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="text-sm font-bold text-error hover:underline flex items-center gap-1">
@@ -142,7 +145,7 @@
                 <h3 class="text-xl font-extrabold text-primary mb-2">Editar Perfil de Usuario</h3>
                 <p class="text-xs text-outline mb-6">Modifique las credenciales y la jerarquía del perfil seleccionado.</p>
 
-                <form method="POST" action="{{ route('usuarios.update', $user->id) }}" class="space-y-5">
+                <form method="POST" action="{{ route('superadministrador.usuarios.update', $user->id) }}" class="space-y-5">
                     @csrf
                     @method('PUT')
 
@@ -173,7 +176,7 @@
                     </div>
 
                     <div class="flex justify-end gap-3 pt-4 border-t border-outline-variant/10 mt-6">
-                        <a href="{{ route('usuarios.index') }}" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-outline hover:bg-surface-container-high transition-colors">Cancelar</a>
+                        <a href="{{ route('superadministrador.usuarios.index') }}" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-outline hover:bg-surface-container-high transition-colors">Cancelar</a>
                         <button type="submit" class="px-6 py-2.5 bg-[#001360] text-white rounded-xl font-semibold shadow-sm hover:bg-opacity-90 transition-colors">Actualizar Perfil</button>
                     </div>
                 </form>

@@ -54,7 +54,7 @@ class LogController extends Controller
             ->paginate(20);
 
         return view(
-            'reportes',
+            'superadministrador.reportes',
             compact('logs')
         );
     }

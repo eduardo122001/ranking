@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <style>
         /*-----------------------------------------------------------------------------------*/
-        /* OJO: ESTA ES LA PANTALLA PARA VER TODOS LOS USUARIOS, USADO EN SUPERADMINISTRADOR */
+        /* OJO: ESTA ES LA PANTALLA PARA VER TODOS LOS USUARIOS, USADO EN tutor */
         /*-----------------------------------------------------------------------------------*/
 
         .material-symbols-outlined {
@@ -104,25 +104,21 @@
 <p class="text-xs font-label uppercase tracking-widest text-outline mt-1">Portal Institucional</p>
 </div>
 <nav class="flex-1 space-y-1">
-<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="#">
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('tutor.dashboard') }}">
 <span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="home">home</span>
                 Inicio
             </a>
-<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('ranking.index') }}">
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('tutor.ranking.index') }}">
 <span class="material-symbols-outlined mr-3" data-icon="leaderboard" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
                 Ranking
             </a>
-<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('pesos.index') }}">
-<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="functions">functions</span>
-                Fórmulas
-            </a>
-<a class="flex items-center border-l-4 border-[#001360] bg-slate-200/50 dark:bg-slate-800/50 text-[#001360] dark:text-blue-300 font-bold px-6 py-4 transition-all duration-200" href="{{ route('reportes.index') }}">
-<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="group">analytics</span>
-                Reportes
-            </a>
-<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('usuarios.index') }}">
-<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="functions">group</span>
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('tutor.usuarios.index') }}">
+<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="group">group</span>
                 Usuarios
+            </a>
+<a class="flex items-center border-l-4 border-[#001360] bg-slate-200/50 dark:bg-slate-800/50 text-[#001360] dark:text-blue-300 font-bold px-6 py-4 transition-all duration-200" href="{{ route('tutor.upload.index') }}">
+<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="group">file_upload</span>
+                subir
             </a>
 </nav>
 <div class="px-6 mt-auto">
@@ -140,7 +136,7 @@
 <!-- Top App Bar -->
 <header class="w-full sticky top-0 z-40 bg-[#fbf8ff] dark:bg-slate-950 shadow-sm dark:shadow-none flex justify-between items-center px-12 py-6">
 <div class="flex flex-col">
-<h2 class="font-[Manrope] font-extrabold text-[#001360] dark:text-blue-100 text-2xl tracking-tight">Reportes</h2>
+<h2 class="font-[Manrope] font-extrabold text-[#001360] dark:text-blue-100 text-2xl tracking-tight">Usuarios</h2>
 <p class="text-sm font-label text-outline">Consolidado Académico 2024-II</p>
 </div>
 <div class="flex items-center gap-6">
@@ -168,210 +164,134 @@
 </div>
 </div>
 </header>
-<!-- Content Area -->
 
-<div class="px-12 py-8 bg-surface-container-low min-h-[calc(100vh-100px)]">
 
-    <!-- Filtros -->
-    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+        <div class="px-4 py-6 sm:px-6 lg:px-8">
 
-        <form
-            method="GET"
-            action="{{ route('reportes.index') }}"
-            class="flex gap-4 flex-wrap">
+            <div class="max-w-6xl mx-auto">
 
-            <div>
+                <section class="mb-8">
+                    <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-[#0f1f63]">
+                        Carga de Documentación Académica
+                    </h1>
+                    <p class="mt-2 max-w-3xl text-sm sm:text-base text-slate-500">
+                        Actualice los registros académicos del semestre en curso mediante la carga de archivos estructurados.
+                    </p>
+                </section>
 
-                <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
-                    Autor
-                </label>
+                <section class="rounded-[28px] bg-white border border-slate-200 shadow-sm p-6 sm:p-8">
+                    <div class="max-w-3xl mx-auto">
+                        <form action="{{ route('tutor.upload.load') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
 
-                <input
-                    type="text"
-                    name="autor"
-                    value="{{ request('autor') }}"
-                    placeholder="Buscar autor..."
-                    class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm shadow-sm ring-1 ring-outline-variant/10 min-w-[250px]">
+                            @if(session('success'))
+                                <div class="mb-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
 
-            </div>
+                            @if($errors->any())
+                                <div class="mb-5 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                                    {{ $errors->first() }}
+                                </div>
+                            @endif
 
-            <div>
-
-                <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
-                    Desde
-                </label>
-
-                <input
-                    type="date"
-                    name="fecha_desde"
-                    value="{{ request('fecha_desde') }}"
-                    class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm shadow-sm ring-1 ring-outline-variant/10">
-
-            </div>
-
-            <div>
-
-                <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
-                    Hasta
-                </label>
-
-                <input
-                    type="date"
-                    name="fecha_hasta"
-                    value="{{ request('fecha_hasta') }}"
-                    class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm shadow-sm ring-1 ring-outline-variant/10">
-
-            </div>
-
-            <div class="flex items-end">
-
-                <button
-                    type="submit"
-                    class="px-5 py-2 bg-primary text-white rounded-xl font-semibold">
-
-                    Filtrar
-
-                </button>
-
-            </div>
-
-        </form>
-
-    </div>
-
-    <!-- Tabla -->
-    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm ring-1 ring-outline-variant/15">
-
-        <div class="overflow-x-auto">
-
-            <table class="w-full text-left border-collapse">
-
-                <thead class="bg-surface-container text-on-surface-variant">
-
-                    <tr>
-
-                        <th class="px-6 py-5 text-xs font-bold uppercase">
-                            Fecha
-                        </th>
-
-                        <th class="px-6 py-5 text-xs font-bold uppercase">
-                            Autor
-                        </th>
-
-                        <th class="px-6 py-5 text-xs font-bold uppercase">
-                            Acción
-                        </th>
-
-                        <th class="px-6 py-5 text-xs font-bold uppercase">
-                            Descripción
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody class="divide-y divide-outline-variant/10">
-
-                @forelse($logs as $log)
-
-                    <tr class="hover:bg-surface-container-low transition-colors">
-
-                        <td class="px-6 py-5">
-
-                            {{ $log->created_at->format('d/m/Y H:i') }}
-
-                        </td>
-
-                        <td class="px-6 py-5">
-
-                            <div class="flex items-center gap-4">
-
-                                <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
-
-                                    {{ strtoupper(substr($log->autor?->name ?? 'S',0,1)) }}
-
+                            <div class="rounded-[28px] border-2 border-dashed border-[#d8def6] bg-[#fbfcff] p-6 sm:p-10 text-center">
+                                
+                                <div class="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#eef2ff] text-[#0f1f63]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-7 h-7">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+                                    </svg>
                                 </div>
 
-                                <div>
+                                <h2 class="text-xl sm:text-2xl font-bold text-[#0f1f63]">
+                                    Subir Archivo de Notas
+                                </h2>
 
-                                    <p class="font-bold">
+                                <p class="mt-2 text-sm sm:text-base text-slate-500">
+                                    Seleccione un archivo desde su computadora para iniciar la carga masiva.
+                                </p>
 
-                                        {{ $log->autor?->name ?? 'Sistema' }}
+                                <p class="mt-3 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                                    Formatos compatibles: Excel, XLSX, CSV
+                                </p>
 
-                                    </p>
+                                <div class="mt-7 text-left max-w-md mx-auto">
+                                    <label class="block mb-2 text-sm font-semibold text-slate-700">
+                                        Seleccionar semestre
+                                    </label>
 
+                                    <select
+                                        name="semestre_id"
+                                        required
+                                        class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-700 outline-none focus:border-[#0f1f63] focus:ring-2 focus:ring-[#0f1f63]/20"
+                                    >
+                                        <option value="">Seleccione un semestre</option>
+
+                                        @foreach($semestres as $semestre)
+                                            <option value="{{ $semestre->id }}">
+                                                {{ $semestre->nombre }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                                    
+                                    <label for="file" id="labelArchivo" class="w-full sm:w-auto cursor-pointer rounded-2xl border-2 border-[#0f1f63] bg-white px-6 py-3 text-sm font-semibold text-[#0f1f63] transition hover:bg-[#f8faff] text-center truncate max-w-[250px]">
+                                        Elegir Archivo...
+                                    </label>
+
+                                    <input
+                                        id="file"
+                                        type="file"
+                                        name="file"
+                                        required
+                                        class="hidden"
+                                        onchange="mostrarArchivo(this)"
+                                    >
+
+                                    <button
+                                        type="submit"
+                                        class="w-full sm:w-auto rounded-2xl bg-[#0f1f63] px-6 py-3 text-sm font-semibold text-white shadow-md shadow-[#0f1f63]/20 transition hover:bg-[#142a86]">
+                                        Procesar Carga
+                                    </button>
+
+                                </div>
+                                
+                                <div class="mt-6">
+                                    <a href="#" class="text-sm font-semibold text-slate-400 hover:text-[#0f1f63] transition underline decoration-transparent hover:decoration-[#0f1f63]">
+                                        Descargar Plantilla Base
+                                    </a>
                                 </div>
 
                             </div>
-
-                        </td>
-
-                        <td class="px-6 py-5">
-
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-surface-container-highest">
-
-                                {{ $log->accion?->nombre }}
-
-                            </span>
-
-                        </td>
-
-                        <td class="px-6 py-5">
-
-                            {{ $log->descripcion }}
-
-                        </td>
-
-                    </tr>
-
-                @empty
-
-                    <tr>
-
-                        <td colspan="4" class="text-center py-10 text-outline">
-
-                            No existen reportes registrados.
-
-                        </td>
-
-                    </tr>
-
-                @endforelse
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-        <!-- Paginación -->
-        <div class="bg-surface-container-lowest px-8 py-4 border-t border-outline-variant/10">
-
-            <div class="flex justify-between items-center">
-
-                <p class="text-sm text-outline">
-
-                    Mostrando
-                    {{ $logs->firstItem() ?? 0 }}
-                    -
-                    {{ $logs->lastItem() ?? 0 }}
-                    de
-                    {{ $logs->total() }}
-                    reportes
-
-                </p>
-
-                {{ $logs->withQueryString()->links() }}
+                        </form>
+                    </div>
+                </section>
 
             </div>
-
         </div>
-
-    </div>
-
+    </main>
 </div>
 
-<!-- Dashboard Insight Card -->
-</div>
-</main>
-</body></html>
+    <script>
+        function mostrarArchivo(input) {
+            const label = document.getElementById('labelArchivo');
+            if (input.files && input.files[0]) {
+                const nombreCorto = input.files[0].name.length > 20 
+                    ? input.files[0].name.substring(0, 17) + '...' 
+                    : input.files[0].name;
+                
+                label.textContent = '📁 ' + nombreCorto;
+                label.classList.add('bg-[#eef2ff]', 'border-transparent');
+                label.classList.remove('bg-white', 'border-[#0f1f63]');
+            } else {
+                label.textContent = 'Elegir Archivo...';
+                label.classList.remove('bg-[#eef2ff]', 'border-transparent');
+                label.classList.add('bg-white', 'border-[#0f1f63]');
+            }
+        }
+    </script>
+</body>
+</html>

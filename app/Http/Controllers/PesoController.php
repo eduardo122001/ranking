@@ -40,7 +40,7 @@ class PesoController extends Controller
             $peso->pagos +
             $peso->referente;
 
-        return view('pesos',compact('peso','total','semestre'));
+        return view('superadministrador.pesos',compact('peso','total','semestre'));
     }
 
     public function update(Request $request)

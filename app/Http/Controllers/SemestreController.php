@@ -14,7 +14,7 @@ class SemestreController extends Controller
             ->take(5)
             ->get();
 
-        return view('semestres', compact('semestres'));
+        return view('superadministrador.semestres', compact('semestres'));
     }
 
     public function store(Request $request)

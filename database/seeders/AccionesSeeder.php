@@ -40,6 +40,12 @@ class AccionesSeeder extends Seeder
                 'updated_at' => now(),
                 'created_at' => now(),
             ],
+            [
+                'id' => 6,
+                'nombre' => 'eliminar_usuario',
+                'updated_at' => now(),
+                'created_at' => now(),
+            ],
         ]);
     }
 }

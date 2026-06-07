@@ -20,7 +20,7 @@ class NotaController extends Controller
             ->take(5)
             ->get();
 
-        return view('upload', compact('semestres'));
+        return view('tutor.upload', compact('semestres'));
     }
 
     public function upload(Request $request)

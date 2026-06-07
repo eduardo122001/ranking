@@ -104,13 +104,29 @@
 <p class="text-xs font-label uppercase tracking-widest text-outline mt-1">Portal Institucional</p>
 </div>
 <nav class="flex-1 space-y-1">
-<a class="flex items-center border-l-4 border-[#001360] bg-slate-200/50 dark:bg-slate-800/50 text-[#001360] dark:text-blue-300 font-bold px-6 py-4 transition-all duration-200" href="{{ route('supervisor.dashboard') }}">
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.dashboard') }}">
 <span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="home">home</span>
                 Inicio
             </a>
-<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('supervisor.ranking.index') }}">
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.ranking.index') }}">
 <span class="material-symbols-outlined mr-3" data-icon="leaderboard" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
                 Ranking
+            </a>
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.pesos.index') }}">
+<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="functions">functions</span>
+                Fórmulas
+            </a>
+<a class="flex items-center border-l-4 border-[#001360] bg-slate-200/50 dark:bg-slate-800/50 text-[#001360] dark:text-blue-300 font-bold px-6 py-4 transition-all duration-200" href="{{ route('superadministrador.reportes.index') }}">
+<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="group">analytics</span>
+                Reportes
+            </a>
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.usuarios.index') }}">
+<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="functions">group</span>
+                Usuarios
+            </a>
+<a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.semestres.index') }}">
+<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="functions">calendar_month</span>
+                semestres
             </a>
 </nav>
 <div class="px-6 mt-auto">
@@ -128,7 +144,7 @@
 <!-- Top App Bar -->
 <header class="w-full sticky top-0 z-40 bg-[#fbf8ff] dark:bg-slate-950 shadow-sm dark:shadow-none flex justify-between items-center px-12 py-6">
 <div class="flex flex-col">
-<h2 class="font-[Manrope] font-extrabold text-[#001360] dark:text-blue-100 text-2xl tracking-tight">Usuarios</h2>
+<h2 class="font-[Manrope] font-extrabold text-[#001360] dark:text-blue-100 text-2xl tracking-tight">Reportes</h2>
 <p class="text-sm font-label text-outline">Consolidado Académico 2024-II</p>
 </div>
 <div class="flex items-center gap-6">
@@ -160,7 +176,202 @@
 
 <div class="px-12 py-8 bg-surface-container-low min-h-[calc(100vh-100px)]">
 
-    BIENVENIDO Supervisor
+    <!-- Filtros -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+
+        <form
+            method="GET"
+            action="{{ route('superadministrador.reportes.index') }}"
+            class="flex gap-4 flex-wrap">
+
+            <div>
+
+                <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
+                    Autor
+                </label>
+
+                <input
+                    type="text"
+                    name="autor"
+                    value="{{ request('autor') }}"
+                    placeholder="Buscar autor..."
+                    class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm shadow-sm ring-1 ring-outline-variant/10 min-w-[250px]">
+
+            </div>
+
+            <div>
+
+                <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
+                    Desde
+                </label>
+
+                <input
+                    type="date"
+                    name="fecha_desde"
+                    value="{{ request('fecha_desde') }}"
+                    class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm shadow-sm ring-1 ring-outline-variant/10">
+
+            </div>
+
+            <div>
+
+                <label class="block text-[10px] uppercase font-bold text-outline mb-1 ml-1">
+                    Hasta
+                </label>
+
+                <input
+                    type="date"
+                    name="fecha_hasta"
+                    value="{{ request('fecha_hasta') }}"
+                    class="bg-surface-container-lowest border-none rounded-xl px-4 py-2 text-sm shadow-sm ring-1 ring-outline-variant/10">
+
+            </div>
+
+            <div class="flex items-end">
+
+                <button
+                    type="submit"
+                    class="px-5 py-2 bg-primary text-white rounded-xl font-semibold">
+
+                    Filtrar
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- Tabla -->
+    <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm ring-1 ring-outline-variant/15">
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-left border-collapse">
+
+                <thead class="bg-surface-container text-on-surface-variant">
+
+                    <tr>
+
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            Fecha
+                        </th>
+
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            Autor
+                        </th>
+
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            Acción
+                        </th>
+
+                        <th class="px-6 py-5 text-xs font-bold uppercase">
+                            Descripción
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="divide-y divide-outline-variant/10">
+
+                @forelse($logs as $log)
+
+                    <tr class="hover:bg-surface-container-low transition-colors">
+
+                        <td class="px-6 py-5">
+
+                            {{ $log->created_at->format('d/m/Y H:i') }}
+
+                        </td>
+
+                        <td class="px-6 py-5">
+
+                            <div class="flex items-center gap-4">
+
+                                <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
+
+                                    {{ strtoupper(substr($log->autor?->name ?? 'S',0,1)) }}
+
+                                </div>
+
+                                <div>
+
+                                    <p class="font-bold">
+
+                                        {{ $log->autor?->name ?? 'Sistema' }}
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td class="px-6 py-5">
+
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-surface-container-highest">
+
+                                {{ $log->accion?->nombre }}
+
+                            </span>
+
+                        </td>
+
+                        <td class="px-6 py-5">
+
+                            {{ $log->descripcion }}
+
+                        </td>
+
+                    </tr>
+
+                @empty
+
+                    <tr>
+
+                        <td colspan="4" class="text-center py-10 text-outline">
+
+                            No existen reportes registrados.
+
+                        </td>
+
+                    </tr>
+
+                @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- Paginación -->
+        <div class="bg-surface-container-lowest px-8 py-4 border-t border-outline-variant/10">
+
+            <div class="flex justify-between items-center">
+
+                <p class="text-sm text-outline">
+
+                    Mostrando
+                    {{ $logs->firstItem() ?? 0 }}
+                    -
+                    {{ $logs->lastItem() ?? 0 }}
+                    de
+                    {{ $logs->total() }}
+                    reportes
+
+                </p>
+
+                {{ $logs->withQueryString()->links() }}
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
