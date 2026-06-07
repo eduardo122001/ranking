@@ -57,12 +57,26 @@ class UserSeeder extends Seeder
 
             'email' => 'eduarcrlr@gmail.com',
 
-            'dni' => '48633739',
+            'dni' => '78633739',
 
             'rol_id' => 1,
 
             'password' => null
 
         ]);
+        User::create([
+
+            'name' => 'juan',
+
+            'email' => 'kratosmg1234@gmail.com',
+
+            'dni' => '88633739',
+
+            'rol_id' => 2,
+
+            'password' => null
+
+        ]);
+        
     }
 }

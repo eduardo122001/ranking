@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Peso extends Model
 {
     protected $fillable = [
-    'semestre_id',
+    //'semestre_id',
 
     'rendimiento',
 

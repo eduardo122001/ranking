@@ -10,9 +10,11 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\TutorController;
 use App\Http\Controllers\SupervisorController;
+use App\Http\Controllers\SemestreController;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+
 
 
 
@@ -27,8 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth'])  
-    ->name('dashboard');
+        ->middleware(['auth'])
+        ->name('dashboard');
 });
 
 // Google login
@@ -53,10 +55,10 @@ Route::middleware(['auth', 'role:3'])->prefix('tutor')->name('tutor.')->group(fu
     Route::get('/estudiante/{id}/editar', [TutorController::class, 'editarEstudiante'])->name('editar-estudiante');
     Route::post('/estudiante/{id}', [TutorController::class, 'guardarEstudiante'])->name('actualizar-estudiante');
     Route::delete('/estudiante/{id}', [TutorController::class, 'eliminarEstudiante'])->name('eliminar-estudiante');
-    Route::get('/upload', [NotaController::class, 'form']);
+    
+});
+Route::get('/upload', [NotaController::class, 'form']);
     Route::post('/upload', [NotaController::class, 'upload']);
-
-    });
 
 // RUTAS SUPERVISOR (rol_id = 2)
 Route::middleware(['auth', 'role:2'])->prefix('supervisor')->name('supervisor.')->group(function () {
@@ -72,6 +74,11 @@ Route::middleware(['auth', 'role:1'])->group(function () { //// Rutas exclusiva 
 
     Route::post('/pesos/update', [PesoController::class, 'update'])
         ->name('pesos.update');
+
+    Route::get('/semestres', [SemestreController::class, 'index'])
+        ->name('semestres.index');
+    Route::post('/semestres', [SemestreController::class, 'store'])
+        ->name('semestres.store');
 
     Route::get('/rankinglist', [RankingController::class, 'index'])
         ->name('ranking.index');
@@ -93,8 +100,7 @@ Route::middleware(['auth', 'role:1'])->group(function () { //// Rutas exclusiva 
 
     Route::get('/reportes', [LogController::class, 'index'])
         ->name('reportes.index');
-
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
