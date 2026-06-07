@@ -236,8 +236,17 @@ class UsuarioController extends Controller
         // 3.  eliminamos el usuario físicamente
         $user->delete();
 
+         // 4. Redireccionar de forma directa por URL para forzar la tabla y romper el bucle del 404
+        if ($authUser->rol_id == 1) {
+            return redirect()->route('superadministrador.usuarios.index')
+                ->with('success', 'Usuario eliminado correctamente');
+        }
+
+        if ($authUser->rol_id == 3) {
+            return redirect()->route('tutor.usuarios.index')
+                ->with('success', 'Usuario eliminado correctamente');
+        }
         
-        // 4. Redireccionar de forma directa por URL para forzar la tabla y romper el bucle del 404
-        return redirect('/usuarios')->with('success', 'Usuario eliminado correctamente');
+        
     }
 }
