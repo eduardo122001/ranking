@@ -118,7 +118,7 @@
                     <p class="text-xs font-bold uppercase tracking-wider text-outline">Promedio Histórico</p>
                     <div class="mt-2 flex items-baseline gap-2">
                         <span class="text-4xl sm:text-5xl font-black tracking-tight text-primary">{{ number_format($promedioHistorico, 1) }}</span>
-                        <span class="text-sm font-bold text-outline uppercase tracking-wider">/ 20.00</span>
+                        <span class="text-sm font-bold text-outline uppercase tracking-wider">/ 2000.00</span>
                     </div>
                     <div class="mt-3">
                         <span class="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">
@@ -136,7 +136,6 @@
 
                 @forelse($historial as $index => $item)
                     @php
-                        // Resolver el nombre limpio del ciclo de manera segura
                         $nombreCiclo = is_object($item->semestre) ? $item->semestre->nombre : $item->semestre;
                     @endphp
                     
@@ -152,46 +151,51 @@
                         </div>
 
                         <div class="p-6 grid grid-cols-2 sm:grid-cols-4 gap-6 items-center bg-white">
+                            
+                            <!-- RENDIMIENTO -->
                             <div class="space-y-1">
                                 <div class="flex items-baseline justify-between">
                                     <span class="text-[10px] font-bold text-outline uppercase tracking-tight">Rendimiento</span>
-                                    <span class="text-sm font-black text-primary">{{ number_format(($item->rendimiento / 20) * 100, 0) }}%</span>
+                                    <span class="text-sm font-black text-primary">{{ number_format($item->peso_rendimiento ?? 35, 1) }}%</span>
                                 </div>
                                 <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                                    <div class="h-1.5 bg-[#001360] rounded-full" style="width: {{ ($item->rendimiento / 20) * 100 }}%"></div>
+                                    <div class="h-1.5 bg-[#001360] rounded-full" style="width: {{ $item->peso_rendimiento ?? 35 }}%"></div>
                                 </div>
                                 <p class="text-[10px] text-outline truncate pt-0.5">Nota: {{ number_format($item->rendimiento, 1) }}</p>
                             </div>
 
+                            <!-- COMPORTAMIENTO -->
                             <div class="space-y-1">
                                 <div class="flex items-baseline justify-between">
                                     <span class="text-[10px] font-bold text-outline uppercase tracking-tight">Comportamiento</span>
-                                    <span class="text-sm font-black text-[#00afa5]">{{ number_format(($item->comportamiento / 20) * 100, 0) }}%</span>
+                                    <span class="text-sm font-black text-[#00afa5]">{{ number_format($item->peso_comportamiento ?? 35, 1) }}%</span>
                                 </div>
                                 <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                                    <div class="h-1.5 bg-[#4adbcf] rounded-full" style="width: {{ ($item->comportamiento / 20) * 100 }}%"></div>
+                                    <div class="h-1.5 bg-[#4adbcf] rounded-full" style="width: {{ $item->peso_comportamiento ?? 35 }}%"></div>
                                 </div>
                                 <p class="text-[10px] text-outline truncate pt-0.5">Nota: {{ number_format($item->comportamiento, 1) }}</p>
                             </div>
 
+                            <!-- PUNTUALIDAD -->
                             <div class="space-y-1">
                                 <div class="flex items-baseline justify-between">
                                     <span class="text-[10px] font-bold text-outline uppercase tracking-tight">Puntualidad</span>
-                                    <span class="text-sm font-black text-[#ba1a1a]">{{ number_format(($item->pagos / 20) * 100, 0) }}%</span>
+                                    <span class="text-sm font-black text-[#ba1a1a]">{{ number_format($item->peso_pagos ?? 15, 1) }}%</span>
                                 </div>
                                 <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                                    <div class="h-1.5 bg-[#ba1a1a] rounded-full" style="width: {{ ($item->pagos / 20) * 100 }}%"></div>
+                                    <div class="h-1.5 bg-[#ba1a1a] rounded-full" style="width: {{ $item->peso_pagos ?? 15 }}%"></div>
                                 </div>
                                 <p class="text-[10px] text-outline truncate pt-0.5">Nota: {{ number_format($item->pagos, 1) }}</p>
                             </div>
 
+                            <!-- REFERENTES -->
                             <div class="space-y-1">
                                 <div class="flex items-baseline justify-between">
                                     <span class="text-[10px] font-bold text-outline uppercase tracking-tight">Referentes</span>
-                                    <span class="text-sm font-black text-slate-700">{{ number_format(($item->referente / 20) * 100, 0) }}%</span>
+                                    <span class="text-sm font-black text-slate-700">{{ number_format($item->peso_referente ?? 15, 1) }}%</span>
                                 </div>
                                 <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                                    <div class="h-1.5 bg-outline-variant" style="width: {{ ($item->referente / 20) * 100 }}%"></div>
+                                    <div class="h-1.5 bg-outline-variant" style="width: {{ $item->peso_referente ?? 15 }}%"></div>
                                 </div>
                                 <p class="text-[10px] text-outline truncate pt-0.5">Nota: {{ number_format($item->referente, 1) }}</p>
                             </div>

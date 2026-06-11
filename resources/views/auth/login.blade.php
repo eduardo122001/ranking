@@ -49,7 +49,43 @@
                 </svg>
                 <span>Continuar con Google</span>
             </a>
- 
+            {{-- Separador --}}
+            <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-200"></div>
+                </div>
+                <div class="relative flex justify-center text-xs">
+                    <span class="bg-white px-3 text-gray-400">o usa email</span>
+                </div>
+            </div>
+
+            {{-- Formulario email/password --}}
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
+                <div class="mb-4">
+                    <input 
+                        type="email" 
+                        name="email" 
+                        placeholder="Correo electrónico"
+                        value="{{ old('email') }}"
+                        class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                </div>
+                <div class="mb-4">
+                    <input 
+                        type="password" 
+                        name="password" 
+                        placeholder="Contraseña"
+                        class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                </div>
+                @if ($errors->any())
+                    <p class="mb-3 text-xs text-red-500">{{ $errors->first() }}</p>
+                @endif
+                <button type="submit" class="w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-medium text-white hover:bg-blue-700">
+                    Entrar
+                </button>
+            </form>
             {{-- Separador informativo --}}
             <p class="mt-6 text-center text-xs text-gray-400 leading-relaxed">
                 Al continuar, aceptas nuestros

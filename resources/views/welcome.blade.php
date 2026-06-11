@@ -8,7 +8,7 @@
     <h1>ooo</h1>
 
     <a href="" class="btn">
-    hola!
+    
     </a>
 </body>
 </html>
