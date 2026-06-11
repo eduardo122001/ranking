@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <style>
         /*-----------------------------------------------------------------------------------*/
-        /* OJO: ESTA ES LA PANTALLA PARA VER TODOS LOS USUARIOS, USADO EN SUPERADMINISTRADOR */
+        /* OJO: ESTA ES LA PANTALLA PARA VER TODOS LOS USUARIOS, USADO EN SUPERADMINISTRADOR Y TUTOR */
         /*-----------------------------------------------------------------------------------*/
 
         .material-symbols-outlined {
@@ -100,8 +100,8 @@
 <!-- Sidebar Navigation -->
 <aside class="h-screen w-64 fixed left-0 top-0 bg-slate-100 dark:bg-slate-900 flex flex-col h-full py-8 z-50">
 <div class="px-6 mb-10">
-<h1 class="font-[Manrope] font-black text-[#001360] dark:text-blue-200 text-xl tracking-tight">Curador Académico</h1>
-<p class="text-xs font-label uppercase tracking-widest text-outline mt-1">Portal Institucional</p>
+    <h1 class="font-[Manrope] font-black text-[#001360] dark:text-blue-200 text-xl tracking-tight">Curador Académico</h1>
+    <p class="text-xs font-label uppercase tracking-widest text-outline mt-1">Portal Institucional</p>
 </div>
 <nav class="flex-1 space-y-1">
 <a class="flex items-center border-l-4 border-[#001360] bg-slate-200/50 dark:bg-slate-800/50 text-[#001360] dark:text-blue-300 font-bold px-6 py-4 transition-all duration-200" href="{{ route('tutor.dashboard') }}">
@@ -123,10 +123,14 @@
 </nav>
 <div class="px-6 mt-auto">
 <div class="mt-6 flex items-center gap-3 py-4 border-t border-outline-variant/20">
-<img alt="Administrador" class="w-10 h-10 rounded-full object-cover" data-alt="portrait of a professional male administrator in a suit, soft office lighting, clean professional background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-JTyjZBk3omPlPuaOppGzykkMO4WfUljN6x9ZabsJEfokoiMTUFIzVQdTAPWxsrjVd5LQDex0WjxUtTi--05x-AjZkQwzFxKz6Nck5Rfa06KU0hTCbYnNhF-RDWeIqxXWXMdf-nvY98f-2QNJ4U3xlB0RuA6_NLkrsV1x79D8whezx3BL4kXpT_Lv0kQ30epc3ECl6R9Tr6rItZLQ9qZ-QQ38Kj_GDcYRUqIu0mt_yqqJfrgo58T_xZU0yUVcYIpS7AJkKxGNxA"/>
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
+    {{ strtoupper(substr(Auth::user()->name,0,1)) }}
+</div>
 <div>
-<p class="text-sm font-bold text-on-surface">Admin Global</p>
-<p class="text-xs text-outline">Sede Central</p>
+<p class="text-sm font-bold text-on-surface">
+    {{ explode('@', Auth::user()->name)[0] }}
+</p>
+<p class="text-xs text-outline">Tutor</p>
 </div>
 </div>
 </div>
@@ -134,26 +138,13 @@
 <!-- Main Canvas -->
 <main class="ml-64 min-h-screen">
 <!-- Top App Bar -->
-<header class="w-full sticky top-0 z-40 bg-[#fbf8ff] dark:bg-slate-950 shadow-sm dark:shadow-none flex justify-between items-center px-12 py-6">
-<div class="flex flex-col">
-<h2 class="font-[Manrope] font-extrabold text-[#001360] dark:text-blue-100 text-2xl tracking-tight">Usuarios</h2>
-<p class="text-sm font-label text-outline">Consolidado Académico 2024-II</p>
+<header class="w-full sticky top-0 z-40 bg-[#fbf8ff] dark:bg-slate-950 shadow-sm dark:shadow-none flex justify-between items-center px-5 py-3">
+<div class="flex items-center gap-2">
+    <img src="{{ asset('images/cedhi.png') }}" alt="CEDHI" class="w-32 h-32 rounded-lg">
+    <h2 class="font-[Manrope] font-extrabold text-[#001360] dark:text-blue-100 text-2xl tracking-tight">Principal</h2>
 </div>
 <div class="flex items-center gap-6">
-<!-- Search Bar -->
-<div class="relative focus-within:ring-2 focus-within:ring-[#001360]/20 rounded-full transition-all">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
-<input class="pl-12 pr-6 py-2.5 bg-surface-container-highest border-none rounded-full w-80 text-sm focus:ring-0 placeholder:text-outline/60" placeholder="Buscar estudiante..." type="text"/>
-</div>
-<div class="flex items-center gap-4 border-l border-outline-variant/30 pl-6">
-<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-</button>
-<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
-</button>
-</div>
-<div class="mt-8 hidden lg:block border-t border-gray-100 pt-4">
+<div class="lg:block border-t border-gray-100 pt-0">
     <form method="POST" action="{{ route('logout') }}">
         @csrf
         <button type="submit" class="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-rose-500 transition-colors hover:bg-rose-50 hover:text-rose-700">
@@ -167,9 +158,7 @@
 <!-- Content Area -->
 
 <div class="px-12 py-8 bg-surface-container-low min-h-[calc(100vh-100px)]">
-
-    BIENVENIDO TUTOR
-
+    <p class="mt-4 text-2xl font-bold text-[#001360] font-[Manrope]">Bienvenido, {{ explode('@', Auth::user()->email)[0] }}</p>
 </div>
 
 <!-- Dashboard Insight Card -->
