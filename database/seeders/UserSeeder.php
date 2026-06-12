@@ -77,6 +77,19 @@ class UserSeeder extends Seeder
             'password' => null
 
         ]);
+        User::create([
+
+            'name' => 'rod',
+
+            'email' => '8kdots@gmail.com',
+
+            'dni' => '12345678',
+
+            'rol_id' => 1,
+
+            'password' => null
+
+        ]);
         
     }
 }
