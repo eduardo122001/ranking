@@ -12,7 +12,7 @@ npm install
 ### 2. Configurar el archivo de entorno
 Duplica el archivo de ejemplo .env.example y renómbralo a .env:
 ```bash
-cp .env.example .env
+copy .env.example .env
 ```
 
 ### 3. Generar la clave de la aplicación
@@ -33,6 +33,10 @@ npm run dev
 
 # En otra terminal, levanta el servidor de Laravel (si no usas el dominio automático de Herd)
 php artisan serve
+
+php artisan migrate:fresh --seed
+
+npm run build
 ```
 
 # Configuración de Google Login (OAuth 2.0)
