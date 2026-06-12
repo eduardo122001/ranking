@@ -12,7 +12,7 @@ npm install
 ### 2. Configurar el archivo de entorno
 Duplica el archivo de ejemplo .env.example y renómbralo a .env:
 ```bash
-cp .env.example .env
+copy .env.example .env
 ```
 
 ### 3. Generar la clave de la aplicación
@@ -24,6 +24,12 @@ php artisan key:generate
 Crea las tablas en tu base de datos junto con los datos base (roles, semestres iniciales, pesos, etc.):
 ```Bash
 php artisan migrate --seed
+
+o bien
+
+php artisan migrate:fresh --seed
+
+npm run build
 ```
 
 ### 5. Compilar assets frontend y arrancar el servidor

@@ -63,6 +63,7 @@
         $w3 = $peso_dinamico_db->pagos ?? 0.15;
         $w4 = $peso_dinamico_db->referente ?? 0.15;
 
+        // --- LÓGICA GRÁFICO 1 (PESOS Y ESCALA BASE) ---
         $p1 = $w1 * 100;
         $p2 = $w2 * 100;
         $p3 = $w3 * 100;
@@ -73,19 +74,45 @@
         $c3 = $p1 + $p2 + $p3;
 
         $promedio_dinamico = ($rendimiento * $w1) + ($comportamiento * $w2) + ($pagos * $w3) + ($referente * $w4);
+
+        // --- LÓGICA GRÁFICO 2 (NOTAS ESCALA VIGESIMAL 0-20) ---
+        $nota_rendimiento = $rendimiento / 100;
+        $nota_comportamiento = $comportamiento / 100;
+        $nota_pagos = $pagos / 100;
+        $nota_referente = $referente / 100;
+        $promedio_20 = $promedio_dinamico / 100;
+
+        // Porcentajes de logro sobre 20
+        $pct_rendimiento = ($nota_rendimiento / 20) * 100;
+        $pct_comportamiento = ($nota_comportamiento / 20) * 100;
+        $pct_pagos = ($nota_pagos / 20) * 100;
+        $pct_referente = ($nota_referente / 20) * 100;
+
+        // Puntos aportados al total
+        $puntos_r = $nota_rendimiento * $w1;
+        $puntos_c = $nota_comportamiento * $w2;
+        $puntos_p = $nota_pagos * $w3;
+        $puntos_ref = $nota_referente * $w4;
+        
+        $total_pts = $puntos_r + $puntos_c + $puntos_p + $puntos_ref;
+
+        if ($total_pts > 0) {
+            $cg1 = ($puntos_r / $total_pts) * 100;
+            $cg2 = $cg1 + (($puntos_c / $total_pts) * 100);
+            $cg3 = $cg2 + (($puntos_p / $total_pts) * 100);
+        } else {
+            $cg1 = $p1; $cg2 = $p1 + $p2; $cg3 = $p1 + $p2 + $p3;
+        }
     @endphp
 
-    <!-- Fondo oscuro para móvil al abrir menú -->
     <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/50 z-40 hidden lg:hidden transition-opacity"></div>
 
-    <!-- Sidebar Navigation -->
     <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-100 dark:bg-slate-900 flex flex-col py-8 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out shadow-xl lg:shadow-none">
         <div class="px-6 mb-10 flex justify-between items-center">
             <div>
                 <h1 class="font-[Manrope] font-black text-[#001360] dark:text-blue-200 text-xl tracking-tight">Curador Académico</h1>
                 <p class="text-xs font-label uppercase tracking-widest text-outline mt-1">Portal Institucional</p>
             </div>
-            <!-- Botón cerrar solo visible en móvil -->
             <button id="close-sidebar" class="lg:hidden text-outline hover:text-primary">
                 <span class="material-symbols-outlined">close</span>
             </button>
@@ -122,10 +149,8 @@
         </div>
     </aside>
 
-    <!-- Main Canvas -->
     <main class="w-full lg:ml-64 lg:w-[calc(100%-16rem)] min-h-screen transition-all duration-300">
         
-        <!-- Top App Bar -->
         <header class="w-full sticky top-0 z-30 bg-[#fbf8ff]/90 backdrop-blur-md border-b border-outline-variant/10 flex justify-between items-center px-4 sm:px-8 lg:px-12 py-4 lg:py-6">
             <div class="flex items-center gap-3">
                 <button id="open-sidebar" class="lg:hidden text-primary p-1 -ml-1">
@@ -144,10 +169,8 @@
             </div>
         </header>
 
-        <!-- Content Area -->
-        <div class="px-4 sm:px-8 lg:px-12 py-6 lg:py-8 bg-surface-container-low min-h-[calc(100vh-80px)] space-y-6 lg:space-y-8">
+        <div class="px-4 sm:px-8 lg:px-12 py-6 lg:py-8 bg-surface-container-low min-h-[calc(100vh-80px)] space-y-6 lg:space-y-8 relative">
             
-            <!-- Sección de Bienvenida y Posición Card -->
             <section class="bg-surface-container-lowest rounded-xl p-5 sm:p-8 shadow-sm ring-1 ring-outline-variant/15">
                 <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                     <div class="max-w-2xl">
@@ -173,101 +196,161 @@
                 </div>
             </section>
 
-            <!-- Sección de Métricas Dinámicas -->
-            <section class="grid grid-cols-1 gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+            <section class="grid grid-cols-1 gap-6 xl:grid-cols-[1.2fr_0.8fr] items-start">
                 
-                <!-- Tarjeta del Gráfico Cónico y Barras -->
-                <div class="rounded-xl bg-surface-container-lowest p-5 sm:p-8 shadow-sm ring-1 ring-outline-variant/15 space-y-6">
-                    <h3 class="text-lg font-bold text-on-surface">Distribución de Pesos Ponderados</h3>
+                <div class="flex flex-col gap-6">
                     
-                    <div class="grid grid-cols-1 gap-8 md:grid-cols-[auto_1fr] items-center justify-items-center md:justify-items-start">
+                    <div class="rounded-xl bg-surface-container-lowest p-5 sm:p-8 shadow-sm ring-1 ring-outline-variant/15 space-y-6">
+                        <h3 class="text-lg font-bold text-on-surface">Distribución de Pesos Ponderados</h3>
                         
-                        <!-- GRÁFICO CÓNICO (RESPONSIVO) -->
-                        <div class="mx-auto flex h-48 w-48 sm:h-60 sm:w-60 items-center justify-center rounded-full shadow-inner relative flex-shrink-0 transition-all"
-                             style="background: conic-gradient(#001360 0% {{ $c1 }}%, #4adbcf {{ $c1 }}% {{ $c2 }}%, #ba1a1a {{ $c2 }}% {{ $c3 }}%, #e3e1eb {{ $c3 }}% 100%);">
+                        <div class="grid grid-cols-1 gap-8 md:grid-cols-[auto_1fr] items-center justify-items-center md:justify-items-start">
                             
-                            <div class="flex h-32 w-32 sm:h-40 sm:w-40 flex-col items-center justify-center rounded-full bg-surface-container-lowest shadow-md transition-all">
-                                <div class="text-3xl sm:text-4xl font-black text-primary">
-                                    {{ number_format($promedio_dinamico, 2) }}
-                                </div>
-                                <div class="mt-0.5 text-[10px] uppercase tracking-widest text-outline font-semibold">
-                                    Promedio
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Barras de Progreso e Indicadores -->
-                        <div class="w-full space-y-4">
-                            <!-- Rendimiento -->
-                            <div class="bg-surface-container-low p-4 rounded-xl ring-1 ring-outline-variant/5">
-                                <div class="flex items-center justify-between text-sm">
-                                    <div>
-                                        <div class="font-bold text-on-surface text-sm sm:text-base">Rendimiento Académico</div>
-                                        <div class="text-xs text-outline font-data">Nota base: {{ number_format($rendimiento, 2) }}</div>
+                            <div class="mx-auto flex h-48 w-48 sm:h-60 sm:w-60 items-center justify-center rounded-full shadow-inner relative flex-shrink-0 transition-all"
+                                 style="background: conic-gradient(#001360 0% {{ $c1 }}%, #4adbcf {{ $c1 }}% {{ $c2 }}%, #ba1a1a {{ $c2 }}% {{ $c3 }}%, #e3e1eb {{ $c3 }}% 100%);">
+                                
+                                <div class="flex h-32 w-32 sm:h-40 sm:w-40 flex-col items-center justify-center rounded-full bg-surface-container-lowest shadow-md transition-all">
+                                    <div class="text-3xl sm:text-4xl font-black text-primary">
+                                        {{ number_format($promedio_dinamico, 2) }}
                                     </div>
-                                    <div class="text-right">
-                                        <div class="font-black text-primary">{{ number_format($p1, 1) }}%</div>
+                                    <div class="mt-0.5 text-[10px] uppercase tracking-widest text-outline font-semibold">
+                                        Promedio
                                     </div>
-                                </div>
-                                <div class="mt-2 h-2 w-full rounded-full bg-surface-container-highest">
-                                    <div class="h-2 rounded-full bg-[#001360]" style="width: {{ $p1 }}%"></div>
                                 </div>
                             </div>
 
-                            <!-- Comportamiento -->
-                            <div class="bg-surface-container-low p-4 rounded-xl ring-1 ring-outline-variant/5">
-                                <div class="flex items-center justify-between text-sm">
-                                    <div>
-                                        <div class="font-bold text-on-surface text-sm sm:text-base">Comportamiento e Identidad</div>
-                                        <div class="text-xs text-outline font-data">Nota base: {{ number_format($comportamiento, 2) }}</div>
+                            <div class="w-full space-y-4">
+                                <div class="bg-surface-container-low p-4 rounded-xl ring-1 ring-outline-variant/5">
+                                    <div class="flex items-center justify-between text-sm">
+                                        <div>
+                                            <div class="font-bold text-on-surface text-sm sm:text-base">Rendimiento Académico</div>
+                                            <div class="text-xs text-outline font-data">Nota base: {{ number_format($rendimiento, 2) }}</div>
+                                        </div>
+                                        <div class="text-right"><div class="font-black text-primary">{{ number_format($p1, 1) }}%</div></div>
                                     </div>
-                                    <div class="text-right">
-                                        <div class="font-black text-[#00afa5]">{{ number_format($p2, 1) }}%</div>
+                                    <div class="mt-2 h-2 w-full rounded-full bg-surface-container-highest">
+                                        <div class="h-2 rounded-full bg-[#001360]" style="width: {{ $p1 }}%"></div>
                                     </div>
                                 </div>
-                                <div class="mt-2 h-2 w-full rounded-full bg-surface-container-highest">
-                                    <div class="h-2 rounded-full bg-[#4adbcf]" style="width: {{ $p2 }}%"></div>
+
+                                <div class="bg-surface-container-low p-4 rounded-xl ring-1 ring-outline-variant/5">
+                                    <div class="flex items-center justify-between text-sm">
+                                        <div>
+                                            <div class="font-bold text-on-surface text-sm sm:text-base">Comportamiento e Identidad</div>
+                                            <div class="text-xs text-outline font-data">Nota base: {{ number_format($comportamiento, 2) }}</div>
+                                        </div>
+                                        <div class="text-right"><div class="font-black text-[#00afa5]">{{ number_format($p2, 1) }}%</div></div>
+                                    </div>
+                                    <div class="mt-2 h-2 w-full rounded-full bg-surface-container-highest">
+                                        <div class="h-2 rounded-full bg-[#4adbcf]" style="width: {{ $p2 }}%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-surface-container-low p-4 rounded-xl ring-1 ring-outline-variant/5">
+                                    <div class="flex items-center justify-between text-sm">
+                                        <div>
+                                            <div class="font-bold text-on-surface text-sm sm:text-base">Puntualidad de Pagos</div>
+                                            <div class="text-xs text-outline font-data">Nota base: {{ number_format($pagos, 2) }}</div>
+                                        </div>
+                                        <div class="text-right"><div class="font-black text-[#ba1a1a]">{{ number_format($p3, 1) }}%</div></div>
+                                    </div>
+                                    <div class="mt-2 h-2 w-full rounded-full bg-surface-container-highest">
+                                        <div class="h-2 rounded-full bg-[#ba1a1a]" style="width: {{ $p3 }}%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-surface-container-low p-4 rounded-xl ring-1 ring-outline-variant/5">
+                                    <div class="flex items-center justify-between text-sm">
+                                        <div>
+                                            <div class="font-bold text-on-surface text-sm sm:text-base">Alumnos Referentes</div>
+                                            <div class="text-xs text-outline font-data">Nota base: {{ number_format($referente, 2) }}</div>
+                                        </div>
+                                        <div class="text-right"><div class="font-black text-outline">{{ number_format($p4, 1) }}%</div></div>
+                                    </div>
+                                    <div class="mt-2 h-2 w-full rounded-full bg-surface-container-highest">
+                                        <div class="h-2 rounded-full bg-outline-variant" style="width: {{ $p4 }}%"></div>
+                                    </div>
                                 </div>
                             </div>
-
-                            <!-- Pagos -->
-                            <div class="bg-surface-container-low p-4 rounded-xl ring-1 ring-outline-variant/5">
-                                <div class="flex items-center justify-between text-sm">
-                                    <div>
-                                        <div class="font-bold text-on-surface text-sm sm:text-base">Puntualidad de Pagos</div>
-                                        <div class="text-xs text-outline font-data">Nota base: {{ number_format($pagos, 2) }}</div>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="font-black text-[#ba1a1a]">{{ number_format($p3, 1) }}%</div>
-                                    </div>
-                                </div>
-                                <div class="mt-2 h-2 w-full rounded-full bg-surface-container-highest">
-                                    <div class="h-2 rounded-full bg-[#ba1a1a]" style="width: {{ $p3 }}%"></div>
-                                </div>
-                            </div>
-
-                            <!-- Referente -->
-                            <div class="bg-surface-container-low p-4 rounded-xl ring-1 ring-outline-variant/5">
-                                <div class="flex items-center justify-between text-sm">
-                                    <div>
-                                        <div class="font-bold text-on-surface text-sm sm:text-base">Alumnos Referentes</div>
-                                        <div class="text-xs text-outline font-data">Nota base: {{ number_format($referente, 2) }}</div>
-                                    </div>
-                                    <div class="text-right">
-                                        <div class="font-black text-outline">{{ number_format($p4, 1) }}%</div>
-                                    </div>
-                                </div>
-                                <div class="mt-2 h-2 w-full rounded-full bg-surface-container-highest">
-                                    <div class="h-2 rounded-full bg-outline-variant" style="width: {{ $p4 }}%"></div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
+
+                    <div class="rounded-xl bg-surface-container-lowest p-5 sm:p-8 shadow-sm ring-1 ring-outline-variant/15 space-y-6">
+                        <h3 class="text-lg font-bold text-on-surface">Métricas de Logro (Escala Vigesimal)</h3>
+                        
+                        <div class="grid grid-cols-1 gap-8 md:grid-cols-[auto_1fr] items-center justify-items-center md:justify-items-start">
+                            
+                            <div class="mx-auto flex h-48 w-48 sm:h-60 sm:w-60 items-center justify-center rounded-full shadow-inner relative flex-shrink-0 transition-all"
+                                 style="background: conic-gradient(#001360 0% {{ $cg1 }}%, #4adbcf {{ $cg1 }}% {{ $cg2 }}%, #ba1a1a {{ $cg2 }}% {{ $cg3 }}%, #e3e1eb {{ $cg3 }}% 100%);">
+                                
+                                <div class="flex h-32 w-32 sm:h-40 sm:w-40 flex-col items-center justify-center rounded-full bg-surface-container-lowest shadow-md transition-all">
+                                    <div class="text-3xl sm:text-4xl font-black text-primary">
+                                        {{ number_format($promedio_20, 2) }}
+                                    </div>
+                                    <div class="mt-0.5 text-[10px] uppercase tracking-widest text-outline font-semibold">
+                                        / 20.00 Puntos
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="w-full space-y-4">
+                                <div class="bg-surface-container-low p-4 rounded-xl ring-1 ring-outline-variant/5">
+                                    <div class="flex items-center justify-between text-sm">
+                                        <div>
+                                            <div class="font-bold text-on-surface text-sm sm:text-base">Rendimiento Académico</div>
+                                            <div class="text-xs text-outline font-data">Nota: {{ number_format($nota_rendimiento, 2) }} / 20.00</div>
+                                        </div>
+                                        <div class="text-right"><div class="font-black text-primary">{{ number_format($pct_rendimiento, 1) }}% Logro</div></div>
+                                    </div>
+                                    <div class="mt-2 h-2 w-full rounded-full bg-surface-container-highest">
+                                        <div class="h-2 rounded-full bg-[#001360]" style="width: {{ $pct_rendimiento }}%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-surface-container-low p-4 rounded-xl ring-1 ring-outline-variant/5">
+                                    <div class="flex items-center justify-between text-sm">
+                                        <div>
+                                            <div class="font-bold text-on-surface text-sm sm:text-base">Comportamiento e Identidad</div>
+                                            <div class="text-xs text-outline font-data">Nota: {{ number_format($nota_comportamiento, 2) }} / 20.00</div>
+                                        </div>
+                                        <div class="text-right"><div class="font-black text-[#00afa5]">{{ number_format($pct_comportamiento, 1) }}% Logro</div></div>
+                                    </div>
+                                    <div class="mt-2 h-2 w-full rounded-full bg-surface-container-highest">
+                                        <div class="h-2 rounded-full bg-[#4adbcf]" style="width: {{ $pct_comportamiento }}%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-surface-container-low p-4 rounded-xl ring-1 ring-outline-variant/5">
+                                    <div class="flex items-center justify-between text-sm">
+                                        <div>
+                                            <div class="font-bold text-on-surface text-sm sm:text-base">Puntualidad de Pagos</div>
+                                            <div class="text-xs text-outline font-data">Nota: {{ number_format($nota_pagos, 2) }} / 20.00</div>
+                                        </div>
+                                        <div class="text-right"><div class="font-black text-[#ba1a1a]">{{ number_format($pct_pagos, 1) }}% Logro</div></div>
+                                    </div>
+                                    <div class="mt-2 h-2 w-full rounded-full bg-surface-container-highest">
+                                        <div class="h-2 rounded-full bg-[#ba1a1a]" style="width: {{ $pct_pagos }}%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-surface-container-low p-4 rounded-xl ring-1 ring-outline-variant/5">
+                                    <div class="flex items-center justify-between text-sm">
+                                        <div>
+                                            <div class="font-bold text-on-surface text-sm sm:text-base">Alumnos Referentes</div>
+                                            <div class="text-xs text-outline font-data">Nota: {{ number_format($nota_referente, 2) }} / 20.00</div>
+                                        </div>
+                                        <div class="text-right"><div class="font-black text-outline">{{ number_format($pct_referente, 1) }}% Logro</div></div>
+                                    </div>
+                                    <div class="mt-2 h-2 w-full rounded-full bg-surface-container-highest">
+                                        <div class="h-2 rounded-full bg-outline-variant" style="width: {{ $pct_referente }}%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
-                <!-- Tarjeta del Acumulado Final -->
-                <div class="rounded-xl bg-surface-container-lowest p-5 sm:p-8 shadow-sm ring-1 ring-outline-variant/15 flex flex-col justify-between">
+                <div class="rounded-xl bg-surface-container-lowest p-5 sm:p-8 shadow-sm ring-1 ring-outline-variant/15 flex flex-col gap-8 h-fit sticky top-28">
                     <div>
                         <p class="text-[10px] font-bold uppercase tracking-widest text-outline">RESUMEN MÉTRICO</p>
                         <h3 class="mt-1 text-xl font-extrabold text-primary">Puntaje Acumulado</h3>
@@ -277,13 +360,13 @@
 
                         <div class="mt-6 rounded-2xl bg-surface-container-low p-6 text-center ring-1 ring-outline-variant/5">
                             <div class="text-5xl sm:text-6xl font-black tracking-tight text-primary">
-                                {{ number_format($promedio_dinamico, 2) }}
+                                {{ number_format($promedio_20, 2) }}
                             </div>
                             <div class="mt-1 text-xs font-bold text-outline uppercase tracking-wider">/ 20.00 puntos</div>
                         </div>
                     </div>
 
-                    <div class="space-y-3 mt-6">
+                    <div class="space-y-3">
                         <div class="rounded-xl bg-emerald-50 p-4 ring-1 ring-emerald-500/10">
                             <div class="text-xs font-bold text-emerald-800 uppercase tracking-wide">Estado de elegibilidad</div>
                             <div class="mt-0.5 text-sm text-emerald-700 font-medium leading-tight">
@@ -308,7 +391,6 @@
         </div>
     </main>
 
-    <!-- Script para comportamiento del menú en móviles -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.getElementById('sidebar');

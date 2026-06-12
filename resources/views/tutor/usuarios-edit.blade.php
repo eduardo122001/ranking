@@ -110,20 +110,24 @@
         </nav>
         <div class="px-6 mt-auto">
             <div class="mt-6 flex items-center gap-3 py-4 border-t border-outline-variant/20">
-                <img alt="Administrador" class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-JTyjZBk3omPlPuaOppGzykkMO4WfUljN6x9ZabsJEfokoiMTUFIzVQdTAPWxsrjVd5LQDex0WjxUtTi--05x-AjZkQwzFxKz6Nck5Rfa06KU0hTCbYnNhF-RDWeIqxXWXMdf-nvY98f-2QNJ4U3xlB0RuA6_NLkrsV1x79D8whezx3BL4kXpT_Lv0kQ30epc3ECl6R9Tr6rItZLQ9qZ-QQ38Kj_GDcYRUqIu0mt_yqqJfrgo58T_xZU0yUVcYIpS7AJkKxGNxA"/>
+                <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
+                    {{ strtoupper(substr(Auth::user()->name,0,1)) }}
+                </div>
                 <div>
-                    <p class="text-sm font-bold text-on-surface">Admin Global</p>
-                    <p class="text-xs text-outline">Sede Central</p>
+                    <p class="text-sm font-bold text-on-surface">
+                        {{ explode('@', Auth::user()->name)[0] }}
+                    </p>
+                    <p class="text-xs text-outline">Tutor</p>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="ml-64 min-h-screen">
-        <header class="w-full sticky top-0 z-40 bg-[#fbf8ff] dark:bg-slate-950 shadow-sm dark:shadow-none flex justify-between items-center px-12 py-6">
-            <div class="flex flex-col">
-                <h2 class="font-[Manrope] font-extrabold text-[#001360] dark:text-blue-100 text-2xl tracking-tight">Usuarios</h2>
-                <p class="text-sm font-label text-outline">Edición y actualización de credenciales</p>
+        <header class="w-full sticky top-0 z-40 bg-[#fbf8ff] dark:bg-slate-950 shadow-sm dark:shadow-none flex justify-between items-center px-5 py-3">
+            <div class="flex items-center gap-2">
+                <img src="{{ asset('images/cedhi.png') }}" alt="CEDHI" class="w-32 h-32 rounded-lg">
+                <h2 class="font-[Manrope] font-extrabold text-[#001360] dark:text-blue-100 text-2xl tracking-tight">Creación de perfiles</h2>
             </div>
             
             <div>
