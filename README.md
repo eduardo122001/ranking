@@ -24,6 +24,12 @@ php artisan key:generate
 Crea las tablas en tu base de datos junto con los datos base (roles, semestres iniciales, pesos, etc.):
 ```Bash
 php artisan migrate --seed
+
+o bien
+
+php artisan migrate:fresh --seed
+
+npm run build
 ```
 
 ### 5. Compilar assets frontend y arrancar el servidor
