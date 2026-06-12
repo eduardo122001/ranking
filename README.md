@@ -12,7 +12,7 @@ npm install
 ### 2. Configurar el archivo de entorno
 Duplica el archivo de ejemplo .env.example y renómbralo a .env:
 ```bash
-cp .env.example .env
+copy .env.example .env
 ```
 
 ### 3. Generar la clave de la aplicación
