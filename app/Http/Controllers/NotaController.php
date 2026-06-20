@@ -16,11 +16,9 @@ class NotaController extends Controller
 {
     public function form()
     {
-        $semestres = Semestre::orderBy('id', 'desc')
-            ->take(5)
-            ->get();
+        $semestre = Semestre::latest('id')->first();
 
-        return view('tutor.upload', compact('semestres'));
+        return view('tutor.upload', compact('semestre'));
     }
 
     public function upload(Request $request)

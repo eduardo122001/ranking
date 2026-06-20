@@ -23,7 +23,11 @@ class NotasImport implements ToModel, WithHeadingRow, WithUpserts
     }
 
     public function model(array $row)
-    {
+    {   
+
+        if (empty($row['dni'])) {
+            return null; // solo saltar fila vacía
+        }
         // Buscar o crear usuario por DNI
         $usuario = User::firstOrCreate(
             ['dni' => $row['dni']],
@@ -98,11 +102,11 @@ class NotasImport implements ToModel, WithHeadingRow, WithUpserts
             'semestre_id' => $this->semestreId,
             'carrera_id' => $carrera->id,
             'semestre_estudiante' => $numero_semestre,
-            'rendimiento' => $v_rendimiento *100,
-            'comportamiento' => $v_comportamiento *100,
-            'pagos' => $v_pagos *100,
-            'referente' => $v_referente *100,
-            'promedio' => $promedio *100,
+            'rendimiento' => $v_rendimiento,
+            'comportamiento' => $v_comportamiento,
+            'pagos' => $v_pagos,
+            'referente' => $v_referente,
+            'promedio' => $promedio,
             'ranking' => 0,
         ]);
     }

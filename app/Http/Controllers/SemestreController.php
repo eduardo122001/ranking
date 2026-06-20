@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Semestre;
 use App\Models\Peso;
 use App\Models\Nota;
+use App\Models\Log;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -50,12 +51,26 @@ class SemestreController extends Controller
             ]);
         }
 
-        Semestre::create([
+        $ultimoSemestre = Semestre::create([
             'nombre' => $nombre,
             'peso_id' => $ultimoPeso->id
         ]);
+
+        $autor = auth()->user();   
+
+        Log::create([
+            'autor_id' => $autor->id,
+            'accion_id' => 7,
+            'entidad' => 'semestre',
+            'entidad_id' => $ultimoSemestre->id,
+            'descripcion' => $autor->name .
+                            ' creo el semestre:  ' .
+                            $ultimoSemestre->nombre
+        ]);
+
         return back()->with('success', "Semestre $nombre creado");
     }
+
     public function destroy(Semestre $semestre): RedirectResponse
     {
         DB::transaction(function () use ($semestre) {
@@ -63,6 +78,18 @@ class SemestreController extends Controller
 
             $semestre->delete();
         });
+
+        $autor = auth()->user();   
+
+        Log::create([
+            'autor_id' => $autor->id,
+            'accion_id' => 8,
+            'entidad' => 'semestre',
+            'entidad_id' => $semestre->id,
+            'descripcion' => $autor->name .
+                            ' elimino el semestre:  ' .
+                            $semestre->nombre
+        ]);
 
         return redirect()
             ->route('superadministrador.semestres.index')

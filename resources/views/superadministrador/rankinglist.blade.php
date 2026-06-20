@@ -348,11 +348,11 @@
                     {{ number_format($nota->promedio, 0) }}
                 </span>
 
-                @if($nota->promedio >= 19.00*100)
+                @if($nota->promedio >= 18.00)
                     <span class="text-[10px] px-2 py-0.5 bg-tertiary-fixed rounded-full font-bold">
                         EXCELENCIA
                     </span>
-                @elseif($nota->promedio >= 15.00*100)
+                @elseif($nota->promedio >= 15.00)
                     <span class="text-[10px] px-2 py-0.5 bg-tertiary-fixed/40 rounded-full font-bold">
                         SOBRESALIENTE
                     </span>
