@@ -32,9 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->middleware(['auth'])
         ->name('dashboard');
-        
-    Route::get('/historial', [HistorialController::class, 'index'])->name('historial.index');
 
+    Route::get('/historial', [HistorialController::class, 'index'])->name('historial.index');
 });
 
 // Google login
@@ -46,12 +45,14 @@ Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name
 
 // Rutas exclusiva para TUTOR (rol_id = 3)
 Route::middleware(['auth', 'role:3'])->prefix('tutor')->name('tutor.')->group(function () {
-    Route::get('/dashboard', function () {return view('tutor.dashboard');} )->name('dashboard');
+    Route::get('/dashboard', function () {
+        return view('tutor.dashboard');
+    })->name('dashboard');
     Route::get('/rankinglist', [RankingController::class, 'index'])
-        ->name('ranking.index');    
-    
+        ->name('ranking.index');
+
     Route::get('/usuarios', [UsuarioController::class, 'index'])
-    ->name('usuarios.index');
+        ->name('usuarios.index');
 
     Route::get('/usuarios/create', [UsuarioController::class, 'create'])
         ->name('usuarios.create');
@@ -64,10 +65,10 @@ Route::middleware(['auth', 'role:3'])->prefix('tutor')->name('tutor.')->group(fu
 
     Route::put('/usuarios/{user}', [UsuarioController::class, 'update'])
         ->name('usuarios.update');
-        
+
     Route::delete('/usuarios/{user}', [UsuarioController::class, 'destroy'])
         ->name('usuarios.destroy');
-    
+
     Route::get('/upload', [NotaController::class, 'form'])->name('upload.index');
     Route::post('/upload', [NotaController::class, 'upload'])->name('upload.load');
 });
@@ -75,16 +76,20 @@ Route::middleware(['auth', 'role:3'])->prefix('tutor')->name('tutor.')->group(fu
 
 // Rutas exclusiva para SUPERVISOR (rol_id = 2)
 Route::middleware(['auth', 'role:2'])->prefix('supervisor')->name('supervisor.')->group(function () {
-    Route::get('/dashboard', function () {return view('supervisor.dashboard');} )->name('dashboard');
+    Route::get('/dashboard', function () {
+        return view('supervisor.dashboard');
+    })->name('dashboard');
     Route::get('/rankinglist', [RankingController::class, 'index'])
         ->name('ranking.index');
 });
 
 
 //// Rutas exclusiva para Superadministrador ID = 1
-Route::middleware(['auth', 'role:1'])->prefix('superadministrador')->name('superadministrador.')->group(function () { 
+Route::middleware(['auth', 'role:1'])->prefix('superadministrador')->name('superadministrador.')->group(function () {
 
-    Route::get('/dashboard', function () {return view('superadministrador.dashboard');} )->name('dashboard');
+    Route::get('/dashboard', function () {
+        return view('superadministrador.dashboard');
+    })->name('dashboard');
     Route::get('/pesos', [PesoController::class, 'index'])
         ->name('pesos.index');
 
@@ -95,6 +100,8 @@ Route::middleware(['auth', 'role:1'])->prefix('superadministrador')->name('super
         ->name('semestres.index');
     Route::post('/semestres', [SemestreController::class, 'store'])
         ->name('semestres.store');
+    Route::delete('/semestres/{semestre}', [SemestreController::class, 'destroy'])
+    ->name('semestres.destroy');
 
     Route::get('/rankinglist', [RankingController::class, 'index'])
         ->name('ranking.index');
@@ -113,7 +120,7 @@ Route::middleware(['auth', 'role:1'])->prefix('superadministrador')->name('super
 
     Route::put('/usuarios/{user}', [UsuarioController::class, 'update'])
         ->name('usuarios.update');
-        
+
     Route::delete('/usuarios/{user}', [UsuarioController::class, 'destroy'])
         ->name('usuarios.destroy');
 

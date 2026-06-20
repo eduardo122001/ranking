@@ -274,7 +274,6 @@
         </div>
 
         <div>
-
             <p class="font-headline font-bold text-on-surface">
                 {{ $semestre->nombre }}
             </p>
@@ -282,10 +281,24 @@
             <p class="text-xs text-outline font-label">
                 Creado el {{ $semestre->created_at->format('d M, Y') }}
             </p>
-
         </div>
 
     </div>
+
+    <form method="POST"
+      action="{{ route('superadministrador.semestres.destroy', $semestre->id) }}"
+      onsubmit="return confirm('¿Seguro que deseas eliminar el semestre {{ $semestre->nombre }}? También se eliminarán todas las notas relacionadas.');">
+    @csrf
+    @method('DELETE')
+
+    <button type="submit"
+            class="w-9 h-9 flex items-center justify-center rounded-full text-red-600 hover:bg-red-100 hover:text-red-800 transition-all"
+            title="Eliminar semestre">
+        <span class="material-symbols-outlined text-[22px]">
+            close
+        </span>
+    </button>
+</form>
 
 </div>
 
