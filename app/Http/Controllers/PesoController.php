@@ -18,17 +18,6 @@ class PesoController extends Controller
 
         $semestre = Semestre::latest('id')->first();
 
-        /*if (!$peso) {
-
-            $peso = Peso::create([
-                'semestre_id' => 1,
-                'rendimiento' => 0.35,
-                'comportamiento' => 0.35,
-                'pagos' => 0.15,
-                'referente' => 0.15
-            ]);
-        }*/
-
         $peso->rendimiento = $peso->rendimiento * 100;
         $peso->comportamiento = $peso->comportamiento * 100;
         $peso->pagos = $peso->pagos * 100;

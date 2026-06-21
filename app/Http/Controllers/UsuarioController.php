@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Rol;
 use App\Models\Log;
+use App\Models\Nota;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UsuarioController extends Controller
 {
@@ -224,17 +226,24 @@ class UsuarioController extends Controller
         $nombreUsuarioEliminado = $user->name;
         $rolUsuarioEliminado = $user->rol->nombre ?? 'Sin rol';
 
-        // 2. Crear el LOG (Reporte) de eliminación
-        Log::create([  
-            'autor_id' => auth()->id(),
-            'accion_id' => 6, 
-            'entidad' => 'user',
-            'entidad_id' => $user->id,
-            'descripcion' => $autor->name . ' eliminó al usuario ' . $nombreUsuarioEliminado . ' que tenía el rol ' . $rolUsuarioEliminado
-        ]);
+        DB::transaction(function () use ($user, $authUser, $nombreUsuarioEliminado, $rolUsuarioEliminado ) {
 
-        // 3.  eliminamos el usuario físicamente
-        $user->delete();
+            // 2. Crear el LOG (Reporte) de eliminación
+            Log::create([  
+                'autor_id' => auth()->id(),
+                'accion_id' => 6, 
+                'entidad' => 'user',
+                'entidad_id' => $user->id,
+                'descripcion' => $authUser->name . ' eliminó al usuario ' . $nombreUsuarioEliminado . ' que tenía el rol ' . $rolUsuarioEliminado
+            ]);
+
+            // Eliminar todas las notas del usuario
+            Nota::where('estudiante_id', $user->id)->delete();
+
+            // 3.  eliminamos el usuario físicamente
+            $user->delete();
+        });
+
 
          // 4. Redireccionar de forma directa por URL para forzar la tabla y romper el bucle del 404
         if ($authUser->rol_id == 1) {

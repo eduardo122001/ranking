@@ -46,6 +46,18 @@ class AccionesSeeder extends Seeder
                 'updated_at' => now(),
                 'created_at' => now(),
             ],
+            [
+                'id' => 7,
+                'nombre' => 'crear_semestre',
+                'updated_at' => now(),
+                'created_at' => now(),
+            ],
+            [
+                'id' => 8,
+                'nombre' => 'eliminar_semestre',
+                'updated_at' => now(),
+                'created_at' => now(),
+            ],
         ]);
     }
 }

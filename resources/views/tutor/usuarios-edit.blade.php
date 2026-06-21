@@ -131,7 +131,7 @@
             </div>
             
             <div>
-                <form method="POST" action="{{ route('tutor.usuarios.destroy', $user->id) }}" onsubmit="return confirm('¿Está completamente seguro de eliminar este usuario?');">
+                <form method="POST" action="{{ route('tutor.usuarios.destroy', $user->id) }}" onsubmit="return confirm('¿Está completamente seguro de eliminar este usuario? SI EL USUARIO TIENE NOTAS, TODAS SERAN BORRADAS !!!');">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="text-sm font-bold text-error hover:underline flex items-center gap-1">

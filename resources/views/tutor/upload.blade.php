@@ -205,27 +205,26 @@
                                 </p>
 
                                 <p class="mt-3 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-                                    Formatos compatibles: Excel, XLSX, CSV
+                                    Formatos compatibles: XLSX
+
                                 </p>
 
-                                <div class="mt-7 text-left max-w-md mx-auto">
-                                    <label class="block mb-2 text-sm font-semibold text-slate-700">
-                                        Seleccionar semestre
-                                    </label>
+                                <div class="mt-3 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
 
-                                    <select
-                                        name="semestre_id"
-                                        required
-                                        class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-700 outline-none focus:border-[#0f1f63] focus:ring-2 focus:ring-[#0f1f63]/20"
-                                    >
-                                        <option value="">Seleccione un semestre</option>
+                                    <div class="inline-block rounded-xl bg-surface-container px-5 py-3">
 
-                                        @foreach($semestres as $semestre)
-                                            <option value="{{ $semestre->id }}">
-                                                {{ $semestre->nombre }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                        <div class="text-xs font-bold uppercase tracking-wider text-outline">
+                                            Semestre actual
+                                        </div>
+
+                                        <div class="text-xl font-black text-primary">
+                                            {{ $semestre->nombre }}
+                                        </div>
+                                        <input type="hidden" name="semestre_id" value="{{ $semestre->id }}">
+
+
+                                    </div>
+
                                 </div>
 
                                 <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -251,17 +250,26 @@
 
                                 </div>
                                 
-                                <div class="mt-6">
-                                    <a href="#" class="text-sm font-semibold text-slate-400 hover:text-[#0f1f63] transition underline decoration-transparent hover:decoration-[#0f1f63]">
-                                        Descargar Plantilla Base
-                                    </a>
-                                </div>
+                                <a
+                                    href="{{ asset('templates/Plantilla.xlsx') }}"
+                                    download
+                                    class="mt-6 inline-block text-sm font-semibold text-slate-400 hover:text-[#0f1f63] transition underline decoration-transparent hover:decoration-[#0f1f63]">
+                                    Click aquí para descargar Plantilla Base
+                                </a>
 
                             </div>
                         </form>
                     </div>
                 </section>
 
+                <div >
+                    <h2 class="text-xl sm:text-2xl font-bold text-[#0f1f63] mt-4">
+                        Ejemplo de los datos en la plantilla
+                    </h2>
+
+                    <img src="{{ asset('images/Plantilla.png') }}" alt="Plantilla ejemplo" class="w-300 h-200 rounded-lg mt-4">
+                </div>
+                
             </div>
         </div>
     </main>
