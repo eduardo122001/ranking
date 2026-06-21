@@ -126,13 +126,18 @@
             </a>
 </nav>
 <div class="px-6 mt-auto">
-<div class="mt-6 flex items-center gap-3 py-4 border-t border-outline-variant/20">
-<img alt="Administrador" class="w-10 h-10 rounded-full object-cover" data-alt="portrait of a professional male administrator in a suit, soft office lighting, clean professional background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-JTyjZBk3omPlPuaOppGzykkMO4WfUljN6x9ZabsJEfokoiMTUFIzVQdTAPWxsrjVd5LQDex0WjxUtTi--05x-AjZkQwzFxKz6Nck5Rfa06KU0hTCbYnNhF-RDWeIqxXWXMdf-nvY98f-2QNJ4U3xlB0RuA6_NLkrsV1x79D8whezx3BL4kXpT_Lv0kQ30epc3ECl6R9Tr6rItZLQ9qZ-QQ38Kj_GDcYRUqIu0mt_yqqJfrgo58T_xZU0yUVcYIpS7AJkKxGNxA"/>
-<div>
-<p class="text-sm font-bold text-on-surface">Admin Global</p>
-<p class="text-xs text-outline">Sede Central</p>
-</div>
-</div>
+    <div class="mt-6 flex items-center gap-3 py-4 border-t border-outline-variant/20">
+        <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
+            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+        </div>
+
+        <div>
+            <p class="text-sm font-bold text-on-surface">
+                {{ explode('@', Auth::user()->name)[0] }}
+            </p>
+            <p class="text-xs text-outline">SuperAdmin</p>
+        </div>
+    </div>
 </div>
 </aside>
 <!-- Main Canvas -->
@@ -147,22 +152,6 @@
 
 <div class="flex items-center gap-6">
 
-
-<!-- Search Bar -->
-<div class="relative focus-within:ring-2 focus-within:ring-[#001360]/20 rounded-full transition-all">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
-<input class="pl-12 pr-6 py-2.5 bg-surface-container-highest border-none rounded-full w-80 text-sm focus:ring-0 placeholder:text-outline/60" placeholder="Buscar estudiante..." type="text"/>
-</div>
-
-
-<div class="flex items-center gap-4 border-l border-outline-variant/30 pl-6">
-<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-</button>
-<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
-</button>
-</div>
 <div class="mt-8 hidden lg:block border-t border-gray-100 pt-4">
     <form method="POST" action="{{ route('logout') }}">
         @csrf
@@ -176,10 +165,8 @@
 </div>
 </header>
 
-    <!-- Main -->
     <main class="flex-1">
 
-        <!-- Header -->
         <header class="h-16 border-b border-slate-200 bg-white/70 backdrop-blur">
 
             <div class="h-full px-5 lg:px-8 flex items-center justify-between">

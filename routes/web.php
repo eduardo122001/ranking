@@ -19,9 +19,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/login');
 
 
 Route::middleware('auth')->group(function () {
