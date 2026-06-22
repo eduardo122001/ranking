@@ -45,18 +45,21 @@
         $nombre = auth()->user()->name ?? 'Juanito';
         $ranking = $registro->ranking ?? 1;
         
-        $rendimiento = $registro->rendimiento ?? 8000; 
-        $comportamiento = $registro->comportamiento ?? 9500;
-        $pagos = $registro->pagos ?? 8000;
-        $referente = $registro->referente ?? 9000;
+        $rendimiento = $registro->rendimiento ?? 0; 
+        $comportamiento = $registro->comportamiento ?? 0;
+        $pagos = $registro->pagos ?? 0;
+        $referente = $registro->referente ?? 0;
         
         $semestre_objeto = $registro->semestre ?? null;
-        $semestre = $semestre_objeto->nombre ?? '2027-1';
+        $semestre = $semestre_objeto->nombre ?? '2025-1';
         $periodo_nombre = $semestre;
 
         $peso_dinamico_db = $semestre_objeto->peso ?? null;
 
-        $estado = $ranking !== null && $ranking <= 5 ? 'Top 5%' : 'Ranking General';
+        $carrera = $registro->carrera;
+        $carrera_nombre = $registro->carrera->nombre ?? 'Sin carrera';
+
+        $estado = $ranking !== null && $ranking <= 5 ? '' : 'Ranking General';
 
         $w1 = $peso_dinamico_db->rendimiento ?? 0.35;
         $w2 = $peso_dinamico_db->comportamiento ?? 0.35;
@@ -359,25 +362,26 @@
 
                         <div class="mt-6 rounded-2xl bg-[#001360]/5 p-6 text-center border border-[#001360]/10 shadow-inner">
                             <div class="text-5xl sm:text-6xl font-black tracking-tight text-[#001360]">
-                                {{ number_format($promedio_20, 2) }}
+                                {{ number_format($promedio_20, 1) }}
                             </div>
                             <div class="mt-1.5 text-[11px] font-bold text-outline uppercase tracking-wider font-data">/ 20.00 puntos</div>
                         </div>
                     </div>
 
                     <div class="space-y-3.5">
-                        <div class="rounded-xl bg-emerald-50 p-4 border border-emerald-200/40">
-                            <div class="text-[10px] font-extrabold text-emerald-800 uppercase tracking-wide">Estado de elegibilidad</div>
-                            <div class="mt-1 text-xs text-emerald-700 font-semibold leading-tight">
-                                Elegible para beneficios de excelencia institucional
-                            </div>
-                        </div>
+                        
 
                         <div class="rounded-xl bg-slate-50/80 p-4 text-xs space-y-2.5 text-on-surface border border-slate-200/30">
                             <div class="flex items-center justify-between border-b border-slate-200/40 pb-2.5">
-                                <span class="text-outline font-medium">Ciclo de Estudios</span>
-                                <span class="font-bold text-[#001360]">5° Semestre</span>
+                                <span class="text-outline font-medium">Carrera</span>
+                                <span class="font-bold text-[#001360]">{{ $carrera_nombre }}</span>
                             </div>
+                                <div class="flex items-center justify-between border-b border-slate-200/40 pb-2.5">
+                                    <span class="text-outline font-medium">Semestre del estudiante: </span>
+                                    <span class="font-bold text-[#001360]">
+                                        {{ $registro->semestre_estudiante ? $registro->semestre_estudiante . '° Semestre' : 'No registrado' }}
+                                    </span>
+                                </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-outline font-medium">Periodo de Carga</span>
                                 <span class="font-bold text-[#001360]" font-data>{{ $periodo_nombre }}</span>
