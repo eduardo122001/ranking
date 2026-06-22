@@ -50,7 +50,6 @@
     <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-100 dark:bg-slate-900 flex flex-col py-8 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out border-r border-slate-200/50">
         
         <div class="px-4 mb-8 relative w-full flex flex-col gap-4">
-            
             <button id="close-sidebar" class="absolute top-0 right-2 lg:hidden text-outline hover:text-primary p-2 rounded-lg hover:bg-slate-200/50 transition-colors">
                 <span class="material-symbols-outlined">close</span>
             </button>
@@ -129,7 +128,7 @@
                 <div class="inline-block min-w-[280px] rounded-xl bg-slate-50/80 p-5 sm:p-6 border border-slate-200/40 self-start md:self-center">
                     <p class="text-xs font-bold uppercase tracking-wider text-outline">Promedio Histórico</p>
                     <div class="mt-2 flex items-baseline gap-2">
-                        <span class="text-4xl sm:text-5xl font-black tracking-tight text-[#001360]">{{ number_format($promedioHistorico / 100, 2) }}</span>
+                        <span class="text-4xl sm:text-5xl font-black tracking-tight text-[#001360]">{{ number_format($promedioHistorico, 2) }}</span>
                         <span class="text-sm font-bold text-outline uppercase tracking-wider font-data">/ 20.00</span>
                     </div>
                     <div class="mt-3">
@@ -150,13 +149,18 @@
                     @php
                         $nombreCiclo = is_object($item->semestre) ? $item->semestre->nombre : $item->semestre;
                         
-                        $nota_20 = $item->final_score / 100;
-                        $pct_total_logro = ($item->final_score / 2000) * 100;
+                        // =========================================================
+                        // CAMBIO INTEGRAL: MAPEO DIRECTO EN ESCALA DE 0 A 20
+                        // =========================================================
+                        $nota_rendimiento = $item->rendimiento ?? 0;
+                        $nota_comportamiento = $item->comportamiento ?? 0;
+                        $nota_pagos = $item->pagos ?? 0;
+                        $nota_referente = $item->referente ?? 0;
 
-                        $nota_rendimiento = ($item->rendimiento ?? 0) / 100;
-                        $nota_comportamiento = ($item->comportamiento ?? 0) / 100;
-                        $nota_pagos = ($item->pagos ?? 0) / 100;
-                        $nota_referente = ($item->referente ?? 0) / 100;
+                        $nota_20 = $item->final_score ?? 0;
+                        
+                        // Porcentaje basado en el tope máximo vigesimal de 20 puntos
+                        $pct_total_logro = $nota_20 > 0 ? ($nota_20 / 20) * 100 : 0;
                     @endphp
                     
                     <div class="bg-white rounded-xl shadow-sm border border-slate-200/60 overflow-hidden grid grid-cols-1 lg:grid-cols-[220px_1fr_180px] min-h-[140px]">

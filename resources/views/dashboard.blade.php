@@ -59,7 +59,7 @@
         $carrera = $registro->carrera;
         $carrera_nombre = $registro->carrera->nombre ?? 'Sin carrera';
 
-        $estado = $ranking !== null && $ranking <= 5 ? '' : 'Ranking General';
+        $estado = $ranking !== null && $ranking <= 5 ? 'Top 5%' : 'Ranking General';
 
         $w1 = $peso_dinamico_db->rendimiento ?? 0.35;
         $w2 = $peso_dinamico_db->comportamiento ?? 0.35;
@@ -75,19 +75,26 @@
         $c2 = $p1 + $p2;
         $c3 = $p1 + $p2 + $p3;
 
-        $promedio_dinamico = ($rendimiento * $w1) + ($comportamiento * $w2) + ($pagos * $w3) + ($referente * $w4);
+        // =========================================================
+        // PROCESAMIENTO DIRECTO EN ESCALA 0 A 20 (DESDE EXCEL)
+        // =========================================================
+        
+        // 1. Asignación directa de notas en base 20 sin divisiones intermedias
+        $nota_rendimiento = $rendimiento;
+        $nota_comportamiento = $comportamiento;
+        $nota_pagos = $pagos;
+        $nota_referente = $referente;
 
-        $nota_rendimiento = 12.00; 
-        $nota_comportamiento = 19.00;
-        $nota_pagos = 16.00;
-        $nota_referente = 18.00;
-        $promedio_20 = 15.95;
+        // 2. El promedio global ya se lee directo en base 20 (desde final_score o calculado)
+        $promedio_20 = $registro->final_score ?? (($rendimiento * $w1) + ($comportamiento * $w2) + ($pagos * $w3) + ($referente * $w4));
 
-        $pct_rendimiento = 60.0;
-        $pct_comportamiento = 95.0;
-        $pct_pagos = 80.0;
-        $pct_referente = 90.0;
-        $pct_total_logro = 79.8;
+        // 3. Calculamos los porcentajes de logro en base al máximo real de 20 puntos
+        $pct_rendimiento = $rendimiento > 0 ? ($rendimiento / 20) * 100 : 0;
+        $pct_comportamiento = $comportamiento > 0 ? ($comportamiento / 20) * 100 : 0;
+        $pct_pagos = $pagos > 0 ? ($pagos / 20) * 100 : 0;
+        $pct_referente = $referente > 0 ? ($referente / 20) * 100 : 0;
+        
+        $pct_total_logro = $promedio_20 > 0 ? ($promedio_20 / 20) * 100 : 0;
     @endphp
 
     <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/40 z-40 hidden lg:hidden transition-opacity backdrop-blur-sm"></div>
@@ -95,20 +102,15 @@
     <!-- Barra Lateral Izquierda -->
     <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-slate-100 dark:bg-slate-900 flex flex-col py-8 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out border-r border-slate-200/50">
         
-        <!-- Cabecera con Logo al Máximo Ancho Posible -->
         <div class="px-4 mb-8 relative w-full flex flex-col gap-4">
-            
-            <!-- Botón de cerrar flotante a la derecha (solo móvil) para que no empuje ni reduzca el tamaño del logo -->
             <button id="close-sidebar" class="absolute top-0 right-2 lg:hidden text-outline hover:text-primary p-2 rounded-lg hover:bg-slate-200/50 transition-colors">
                 <span class="material-symbols-outlined">close</span>
             </button>
             
-            <!-- Contenedor del Logo expandido al 100% del ancho del menú -->
             <div class="w-full px-2">
                 <img src="{{ asset('images/cedhi.png') }}" alt="CEDHI Logo" class="w-full h-auto max-h-40 object-contain block mx-auto">
             </div>
             
-            <!-- Título identificador inferior -->
             <div class="px-2 border-t border-slate-200/60 pt-3">
                 <h1 class="font-display font-extrabold text-[#001360] dark:text-blue-200 text-xl tracking-tight leading-tight">
                     Curador Académico
@@ -279,7 +281,7 @@
                                         <span class="font-black text-[#001360] text-xs bg-white px-2 py-1 rounded-md border border-slate-200/40 shadow-2xs">{{ number_format($pct_referente, 1) }}%</span>
                                     </div>
                                     <div class="mt-2.5 h-2 w-full rounded-full bg-slate-200/50 overflow-hidden">
-                                        <div class="h-2 rounded-full bg-[#001360]" style="width: {{ $pct_referente }}%"></div>
+                                        <div class="h-2 rounded-full bg-[#94a3b8]" style="width: {{ $pct_referente }}%"></div>
                                     </div>
                                 </div>
                             </div>
@@ -362,26 +364,24 @@
 
                         <div class="mt-6 rounded-2xl bg-[#001360]/5 p-6 text-center border border-[#001360]/10 shadow-inner">
                             <div class="text-5xl sm:text-6xl font-black tracking-tight text-[#001360]">
-                                {{ number_format($promedio_20, 1) }}
+                                {{ number_format($promedio_20, 2) }}
                             </div>
                             <div class="mt-1.5 text-[11px] font-bold text-outline uppercase tracking-wider font-data">/ 20.00 puntos</div>
                         </div>
                     </div>
 
                     <div class="space-y-3.5">
-                        
-
                         <div class="rounded-xl bg-slate-50/80 p-4 text-xs space-y-2.5 text-on-surface border border-slate-200/30">
                             <div class="flex items-center justify-between border-b border-slate-200/40 pb-2.5">
                                 <span class="text-outline font-medium">Carrera</span>
                                 <span class="font-bold text-[#001360]">{{ $carrera_nombre }}</span>
                             </div>
-                                <div class="flex items-center justify-between border-b border-slate-200/40 pb-2.5">
-                                    <span class="text-outline font-medium">Semestre del estudiante: </span>
-                                    <span class="font-bold text-[#001360]">
-                                        {{ $registro->semestre_estudiante ? $registro->semestre_estudiante . '° Semestre' : 'No registrado' }}
-                                    </span>
-                                </div>
+                            <div class="flex items-center justify-between border-b border-slate-200/40 pb-2.5">
+                                <span class="text-outline font-medium">Semestre del estudiante: </span>
+                                <span class="font-bold text-[#001360]">
+                                    {{ $registro->semestre_estudiante ? $registro->semestre_estudiante . '° Semestre' : 'No registrado' }}
+                                </span>
+                            </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-outline font-medium">Periodo de Carga</span>
                                 <span class="font-bold text-[#001360]" font-data>{{ $periodo_nombre }}</span>
