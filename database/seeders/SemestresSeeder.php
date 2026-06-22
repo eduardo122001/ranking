@@ -20,19 +20,6 @@ class SemestresSeeder extends Seeder
                 'peso_id' => 1,
             ]
         );
-        Semestre::Create(
-
-            [
-                'nombre' => '2025-2',
-                'peso_id' => 1,
-            ]
-        );
-        Semestre::Create(
-
-            [
-                'nombre' => '2025-1',
-                'peso_id' => 1,
-            ]
-        );
+        
     }
 }
