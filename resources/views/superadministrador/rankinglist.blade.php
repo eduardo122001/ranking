@@ -333,16 +333,16 @@
         </td>
 
         <td class="px-6 py-6 text-sm text-outline font-data">
-            {{ number_format($nota->rendimiento, 0) }}
+            {{ $nota->rendimiento, 0 }}
         </td>
         <td class="px-6 py-6 text-sm text-outline font-data">
-            {{ number_format($nota->comportamiento, 0) }}
+            {{ $nota->comportamiento, 0 }}
         </td>
         <td class="px-6 py-6 text-sm text-outline font-data">
-            {{ number_format($nota->pagos, 0) }}
+            {{ $nota->pagos, 0 }}
         </td>
         <td class="px-6 py-6 text-sm text-outline font-data">
-            {{ number_format($nota->referente, 0) }}
+            {{ $nota->referente, 0 }}
         </td>
 
         <td class="px-8 py-6 text-right">
@@ -350,7 +350,7 @@
             <div class="inline-flex flex-col items-end">
 
                 <span class="text-xl font-display font-extrabold">
-                    {{ number_format($nota->promedio, 0) }}
+                    {{ $nota->promedio, 0 }}
                 </span>
 
                 @if($nota->promedio >= 18.00)

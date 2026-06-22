@@ -59,7 +59,7 @@
         $carrera = $registro->carrera;
         $carrera_nombre = $registro->carrera->nombre ?? 'Sin carrera';
 
-        $estado = $ranking !== null && $ranking <= 5 ? 'Top 5%' : 'Ranking General';
+        $estado = $ranking !== null && $ranking <= 5 ? '' : 'Ranking General';
 
         $w1 = $peso_dinamico_db->rendimiento ?? 0.35;
         $w2 = $peso_dinamico_db->comportamiento ?? 0.35;
@@ -197,9 +197,6 @@
                             #{{ $ranking }}
                         </div>
                         <p class="mt-0.5 text-xs text-outline font-medium">Rendimiento General</p>
-                        <span class="mt-3 inline-flex items-center rounded-full bg-emerald-100/80 px-3 py-1 text-xs font-bold text-emerald-700 border border-emerald-200/50">
-                            {{ $estado }}
-                        </span>
                     </div>
                 </div>
             </section>
@@ -281,7 +278,7 @@
                                         <span class="font-black text-[#001360] text-xs bg-white px-2 py-1 rounded-md border border-slate-200/40 shadow-2xs">{{ number_format($pct_referente, 1) }}%</span>
                                     </div>
                                     <div class="mt-2.5 h-2 w-full rounded-full bg-slate-200/50 overflow-hidden">
-                                        <div class="h-2 rounded-full bg-[#94a3b8]" style="width: {{ $pct_referente }}%"></div>
+                                        <div class="h-2 rounded-full bg-[#001360]" style="width: {{ $pct_referente }}%"></div>
                                     </div>
                                 </div>
                             </div>

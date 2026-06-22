@@ -251,7 +251,6 @@
 <div class="pt-4">
     <button class="w-full bg-[#001360] text-white py-4 px-8 rounded-lg font-headline font-bold flex items-center justify-center gap-3 hover:opacity-90 active:scale-[0.98] transition-all shadow-lg shadow-primary/10" type="submit">
     <span class="">Crear Semestre</span>
-    <span class="material-symbols-outlined">rocket_launch</span>
     </button>
 </div>
 </form>

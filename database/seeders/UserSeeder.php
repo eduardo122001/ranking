@@ -26,19 +26,6 @@ class UserSeeder extends Seeder
 
         ]);
 
-        User::create([
-
-            'name' => 'pol',
-
-            'email' => 'matiaapavelsanchecuno@gmail.com',
-
-            'dni' => '71111111',
-
-            'rol_id' => 1,
-
-            'password' => null
-
-        ]);
         
     }
 }

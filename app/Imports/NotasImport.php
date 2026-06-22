@@ -107,7 +107,7 @@ class NotasImport implements ToModel, WithHeadingRow, WithUpserts
             'pagos' => $v_pagos,
             'referente' => $v_referente,
             'promedio' => $promedio,
-            'ranking' => 0,
+            'ranking' => 1,
         ]);
     }
 

@@ -131,11 +131,7 @@
                         <span class="text-4xl sm:text-5xl font-black tracking-tight text-[#001360]">{{ number_format($promedioHistorico, 2) }}</span>
                         <span class="text-sm font-bold text-outline uppercase tracking-wider font-data">/ 20.00</span>
                     </div>
-                    <div class="mt-3">
-                        <span class="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">
-                            <span class="material-symbols-outlined text-xs mr-1" style="font-variation-settings: 'wght' 700;">trending_up</span> {{ $diferenciaPeriodoAnterior }} vs Inicial
-                        </span>
-                    </div>
+                    
                 </div>
             </section>
 
@@ -237,9 +233,7 @@
                         <div class="bg-slate-50/70 p-6 flex flex-col justify-center items-center text-center border-t lg:border-t-0 lg:border-l border-slate-200/40">
                             <span class="text-xs uppercase tracking-wider text-outline font-bold">Ranking</span>
                             <span class="text-4xl font-black text-primary tracking-tight mt-0.5">#{{ $item->ranking ?? '—' }}</span>
-                            <span class="mt-2 inline-flex items-center rounded-full px-3 py-0.5 text-[10px] font-bold {{ $item->ranking <= 5 ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700' }}">
-                                {{ $item->ranking <= 5 ? 'Top 5%' : 'General' }}
-                            </span>
+                            
                         </div>
 
                     </div>
