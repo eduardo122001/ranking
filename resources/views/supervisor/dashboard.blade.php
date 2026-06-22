@@ -120,7 +120,7 @@
 </div>
 <div>
 <p class="text-sm font-bold text-on-surface">
-    {{ explode('@', Auth::user()->name)[0] }}
+    {{ Auth::user()->name }}
 </p>
 <p class="text-xs text-outline">Supervisor</p>
 </div>
@@ -153,7 +153,9 @@
 
 <div class="px-12 py-8 bg-surface-container-low min-h-[calc(100vh-100px)]">
 
-    BIENVENIDO SUPERVISOR
+     <p class="mt-4 text-2xl font-bold text-[#001360] font-[Manrope]">
+        Bienvenido Supervisor {{ Auth::user()->name }}
+    </p>
 
 </div>
 

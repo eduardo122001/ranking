@@ -109,7 +109,11 @@
             <a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.semestres.index') }}">
             <span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="functions">calendar_month</span> semestres
             </a>
-        </nav>
+            <a class="flex items-center text-slate-500 dark:text-slate-400 font-medium px-6 py-4 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all duration-200 group" href="{{ route('superadministrador.upload.index') }}">
+            <span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform" data-icon="group">file_upload</span>
+                            subir
+            </a>
+        </nav>  
         <div class="px-6 mt-auto">
             <div class="mt-6 flex items-center gap-3 py-4 border-t border-outline-variant/20">
                 <img alt="Administrador" class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-JTyjZBk3omPlPuaOppGzykkMO4WfUljN6x9ZabsJEfokoiMTUFIzVQdTAPWxsrjVd5LQDex0WjxUtTi--05x-AjZkQwzFxKz6Nck5Rfa06KU0hTCbYnNhF-RDWeIqxXWXMdf-nvY98f-2QNJ4U3xlB0RuA6_NLkrsV1x79D8whezx3BL4kXpT_Lv0kQ30epc3ECl6R9Tr6rItZLQ9qZ-QQ38Kj_GDcYRUqIu0mt_yqqJfrgo58T_xZU0yUVcYIpS7AJkKxGNxA"/>

@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <style>
         /*-----------------------------------------------------------------------------------*/
-        /* OJO: ESTA ES LA PANTALLA PARA VER TODOS LOS USUARIOS, USADO EN SUPERADMINISTRADOR Y TUTOR */
+        /* OJO: ESTA ES LA PANTALLA de inicio */
         /*-----------------------------------------------------------------------------------*/
 
         .material-symbols-outlined {
@@ -128,7 +128,7 @@
 </div>
 <div>
 <p class="text-sm font-bold text-on-surface">
-    {{ explode('@', Auth::user()->name)[0] }}
+    {{ Auth::user()->name }}
 </p>
 <p class="text-xs text-outline">Tutor</p>
 </div>
@@ -158,7 +158,9 @@
 <!-- Content Area -->
 
 <div class="px-12 py-8 bg-surface-container-low min-h-[calc(100vh-100px)]">
-    <p class="mt-4 text-2xl font-bold text-[#001360] font-[Manrope]">Bienvenido, {{ explode('@', Auth::user()->email)[0] }}</p>
+    <p class="mt-4 text-2xl font-bold text-[#001360] font-[Manrope]">
+        Bienvenido Tutor {{ Auth::user()->name }}
+    </p>
 </div>
 
 <!-- Dashboard Insight Card -->

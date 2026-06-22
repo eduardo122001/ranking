@@ -121,6 +121,7 @@
                 subir
             </a>
 
+
 </nav>
 <div class="px-6 mt-auto">
 <div class="mt-6 flex items-center gap-3 py-4 border-t border-outline-variant/20">

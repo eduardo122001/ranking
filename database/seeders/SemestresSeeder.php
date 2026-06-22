@@ -16,7 +16,7 @@ class SemestresSeeder extends Seeder
         Semestre::Create(
 
             [
-                'nombre' => '2025-1',
+                'nombre' => '2026-1',
                 'peso_id' => 1,
             ]
         );
@@ -30,7 +30,7 @@ class SemestresSeeder extends Seeder
         Semestre::Create(
 
             [
-                'nombre' => '2026-1',
+                'nombre' => '2025-1',
                 'peso_id' => 1,
             ]
         );

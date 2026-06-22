@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 use Maatwebsite\Excel\Facades\Excel;
 
+use Illuminate\Support\Facades\Auth;
 use App\Imports\NotasImport;
 use App\Models\Semestre;
 use App\Models\Log;
@@ -18,7 +19,16 @@ class NotaController extends Controller
     {
         $semestre = Semestre::latest('id')->first();
 
-        return view('tutor.upload', compact('semestre'));
+
+        $authuser = Auth::user();
+
+        if ($authuser->rol_id == 1) {
+                return view('superadministrador.upload', compact('semestre'));
+        }
+        if ($authuser->rol_id == 3) {
+                return view('tutor.upload', compact('semestre'));
+        }
+
     }
 
     public function upload(Request $request)

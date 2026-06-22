@@ -124,6 +124,10 @@ Route::middleware(['auth', 'role:1'])->prefix('superadministrador')->name('super
 
     Route::get('/reportes', [LogController::class, 'index'])
         ->name('reportes.index');
+
+    Route::get('/upload', [NotaController::class, 'form'])->name('upload.index');
+    
+    Route::post('/upload', [NotaController::class, 'upload'])->name('upload.load');
 });
 
 
