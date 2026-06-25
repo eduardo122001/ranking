@@ -46,7 +46,7 @@ class RankingController extends Controller
         $user = Auth::user();
 
         if ($user->rol_id == 1) {
-            return view('Superadministrador.rankinglist', compact(
+            return view('superadministrador.rankinglist', compact(
             'ranking',
             'carreras',
             'semestres',

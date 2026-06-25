@@ -230,9 +230,9 @@
                                         </div>
 
                                         <div class="text-xl font-black text-primary">
-                                            {{ $semestre->nombre }}
+                                            {{ $semestre?->nombre ?? 'Sin semestre registrado' }}
                                         </div>
-                                        <input type="hidden" name="semestre_id" value="{{ $semestre->id }}">
+                                        <input type="hidden" name="semestre_id" value="{{ $semestre?->id }}">
 
 
                                     </div>
