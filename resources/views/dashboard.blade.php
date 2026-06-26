@@ -42,22 +42,22 @@
 <body class="bg-surface text-on-surface overflow-x-hidden antialiased">
 
     @php
+        $registro = $registro ?? null;
         $nombre = auth()->user()->name ?? 'Juanito';
-        $ranking = $registro->ranking ?? 1;
+        $ranking = $registro?->ranking ?? 1;
         
-        $rendimiento = $registro->rendimiento ?? 0; 
-        $comportamiento = $registro->comportamiento ?? 0;
-        $pagos = $registro->pagos ?? 0;
-        $referente = $registro->referente ?? 0;
+        $rendimiento = $registro?->rendimiento ?? 0;
+        $comportamiento = $registro?->comportamiento ?? 0;
+        $pagos = $registro?->pagos ?? 0;
+        $referente = $registro?->referente ?? 0;
         
-        $semestre_objeto = $registro->semestre ?? null;
-        $semestre = $semestre_objeto->nombre ?? '2025-1';
+        $semestre_objeto = $registro?->semestre;
+        $semestre = $semestre_objeto?->nombre ?? '2025-1';
         $periodo_nombre = $semestre;
 
-        $peso_dinamico_db = $semestre_objeto->peso ?? null;
+        $peso_dinamico_db = $semestre_objeto?->peso;
 
-        $carrera = $registro->carrera;
-        $carrera_nombre = $registro->carrera->nombre ?? 'Sin carrera';
+        $carrera_nombre = $registro?->carrera?->nombre ?? 'Sin carrera';
 
         $estado = $ranking !== null && $ranking <= 5 ? '' : 'Ranking General';
 
@@ -376,7 +376,7 @@
                             <div class="flex items-center justify-between border-b border-slate-200/40 pb-2.5">
                                 <span class="text-outline font-medium">Semestre del estudiante: </span>
                                 <span class="font-bold text-[#001360]">
-                                    {{ $registro->semestre_estudiante ? $registro->semestre_estudiante . '° Semestre' : 'No registrado' }}
+                                    {{ $registro?->semestre_estudiante ? $registro->semestre_estudiante . '° Semestre' : 'No registrado' }}
                                 </span>
                             </div>
                             <div class="flex items-center justify-between">
