@@ -35,7 +35,7 @@ class NotaController extends Controller
     {
         // Validar archivo
         $request->validate([
-            'file' => 'required|mimes:xlsx,xls',
+            'file' => 'required|extensions:xlsx,xls',
             'semestre_id' => 'required|exists:semestres,id'
         ]);
 
@@ -54,31 +54,32 @@ class NotaController extends Controller
         foreach ($import->gruposAfectados as $grupo) {
 
             DB::statement("
-        UPDATE notas n
-        JOIN (
-            SELECT
-                id,
-                DENSE_RANK() OVER (
-                    ORDER BY
-                        promedio DESC,
-                        rendimiento DESC,
-                        comportamiento DESC
-                ) AS nuevo_ranking
-            FROM notas
-            WHERE semestre_id = ?
-            AND carrera_id = ?
-            AND semestre_estudiante = ?
-        ) r ON n.id = r.id
-        SET n.ranking = r.nuevo_ranking
-        WHERE n.semestre_id = ?
-        AND n.carrera_id = ?
-        AND n.semestre_estudiante = ?
+        UPDATE notas
+        SET ranking = (
+            SELECT nuevo_ranking
+            FROM (
+                SELECT
+                    id,
+                    DENSE_RANK() OVER (
+                        ORDER BY
+                            promedio DESC,
+                            rendimiento DESC,
+                            comportamiento DESC
+                    ) AS nuevo_ranking
+                FROM notas
+                WHERE semestre_id = ?
+                AND carrera_id = ?
+                AND semestre_estudiante = ?
+            ) r
+            WHERE r.id = notas.id
+        )
+        WHERE semestre_id = ?
+        AND carrera_id = ?
+        AND semestre_estudiante = ?
     ", [
-
                 $grupo['semestre_id'],
                 $grupo['carrera_id'],
                 $grupo['semestre_estudiante'],
-
                 $grupo['semestre_id'],
                 $grupo['carrera_id'],
                 $grupo['semestre_estudiante']
